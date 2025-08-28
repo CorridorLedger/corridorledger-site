@@ -6,8 +6,9 @@
   <title>Corridor Ledger</title>
   <meta name="description" content="Corridor Ledger investigates the unseen machinery of power—contracts, committees, and quiet capital—so readers can see how decisions are actually made.">
 
-  <!-- Favicon (tab icon) -->
+  <!-- Favicons -->
   <link rel="icon" href="C_3072h_white.ico?v=2" type="image/x-icon" />
+  <link rel="icon" href="C_3072h_white.png?v=2" type="image/png" />
 
   <!-- Styles -->
   <link rel="stylesheet" href="main.css" />
@@ -30,8 +31,10 @@
         sizes="(max-width: 900px) 80vw, 560px"
         alt="Corridor Ledger"
         class="wordmark"
+        loading="eager"
+        decoding="async"
       />
-      <nav class="nav">
+      <nav class="nav" aria-label="Primary">
         <a href="#">Mechanisms</a>
         <a href="#">Figures</a>
         <a href="#">Numbers</a>
@@ -45,7 +48,7 @@
   </header>
 
   <main class="container">
-    <!-- Coming soon hero (replaces all placeholder stories) -->
+    <!-- Coming soon hero -->
     <section class="rail">
       <article class="hero" style="text-align:center">
         <h1>The Ledger Opens.</h1>
@@ -54,14 +57,14 @@
       </article>
     </section>
 
-    <!-- Optional: keep your CTA -->
+    <!-- CTA -->
     <section class="rail cta">
       <div class="cta-box">
         <h2>Power, documented.</h2>
         <p class="muted">One issue per week. Evidence first.</p>
         <form onsubmit="return false;" aria-label="Newsletter signup">
-          <input type="email" placeholder="you@email.com" aria-label="Email" />
-          <button type="submit">Notify me</button>
+          <input type="email" placeholder="you@email.com" aria-label="Email" inputmode="email" />
+          <button type="submit">Subscribe</button>
         </form>
       </div>
     </section>
