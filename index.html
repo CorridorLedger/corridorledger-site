@@ -23,8 +23,13 @@
 </head>
 <body>
   <header class="site-header">
-    <!-- top bar: centered wordmark + menu button on the right -->
+    <!-- top bar: left = menu button, center = wordmark -->
     <div class="brand">
+      <button class="icon-btn menu-btn" id="menuToggle"
+              aria-label="Open menu" aria-expanded="false" aria-controls="panel">
+        ☰
+      </button>
+
       <a href="/" class="logo-link" aria-label="Corridor Ledger home">
         <img
           src="wordmark_header_1200w.png"
@@ -39,24 +44,20 @@
           loading="eager"
         />
       </a>
-
-      <button class="icon-btn menu-btn" id="menuToggle"
-              aria-label="Open menu" aria-expanded="false" aria-controls="panel">
-        ☰
-      </button>
     </div>
 
     <!-- centered desktop nav -->
     <nav class="nav desktop-nav" aria-label="Primary">
-      <a href="#">Mechanisms</a>
-      <a href="#">Figures</a>
-      <a href="#">Numbers</a>
-      <a href="#">Dossiers</a>
+      <a href="/" data-route="/">Home</a>
+      <a href="/mechanisms/" data-route="/mechanisms/">Mechanisms</a>
+      <a href="/figures/" data-route="/figures/">Figures</a>
+      <a href="/numbers/" data-route="/numbers/">Numbers</a>
+      <a href="/dossiers/" data-route="/dossiers/">Dossiers</a>
       <a class="tips" href="mailto:tips@corridorledger.com">Tips</a>
     </nav>
 
-    <!-- slide-over panel (mobile): search at top, then nav links -->
-    <aside class="panel" id="panel" hidden>
+    <!-- LEFT slide-over panel (mobile): search at top, then nav links -->
+    <aside class="panel" id="panel" aria-hidden="true">
       <div class="panel-inner">
         <form class="panel-search" onsubmit="return false" role="search" aria-label="Site search">
           <input class="search-input" type="search" placeholder="Search Corridor Ledger" />
@@ -64,15 +65,16 @@
         </form>
 
         <nav class="panel-nav" aria-label="Mobile primary">
-          <a href="#">Mechanisms</a>
-          <a href="#">Figures</a>
-          <a href="#">Numbers</a>
-          <a href="#">Dossiers</a>
+          <a href="/" data-route="/">Home</a>
+          <a href="/mechanisms/" data-route="/mechanisms/">Mechanisms</a>
+          <a href="/figures/" data-route="/figures/">Figures</a>
+          <a href="/numbers/" data-route="/numbers/">Numbers</a>
+          <a href="/dossiers/" data-route="/dossiers/">Dossiers</a>
           <a class="tips" href="mailto:tips@corridorledger.com">Tips</a>
         </nav>
       </div>
     </aside>
-    <div class="panel-backdrop" id="backdrop" hidden></div>
+    <div class="panel-backdrop" id="backdrop" aria-hidden="true"></div>
   </header>
 
   <main id="main" class="container">
@@ -106,28 +108,39 @@
   </footer>
 
   <script>
+    // Elements
     const menuToggle = document.getElementById('menuToggle');
     const panel = document.getElementById('panel');
     const panelClose = document.getElementById('panelClose');
     const backdrop = document.getElementById('backdrop');
 
+    // Open/close with slide animation
     function openPanel(open) {
-      panel.hidden = !open;
-      backdrop.hidden = !open;
-      menuToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
       document.body.classList.toggle('no-scroll', open);
-      if (open) panel.querySelector('.search-input').focus();
+      panel.classList.toggle('open', open);
+      backdrop.classList.toggle('show', open);
+      menuToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+      panel.setAttribute('aria-hidden', open ? 'false' : 'true');
+      backdrop.setAttribute('aria-hidden', open ? 'false' : 'true');
+      if (open) panel.querySelector('.search-input')?.focus();
     }
-
-    menuToggle.addEventListener('click', () => openPanel(panel.hidden));
+    menuToggle.addEventListener('click', () => openPanel(!panel.classList.contains('open')));
     panelClose.addEventListener('click', () => openPanel(false));
     backdrop.addEventListener('click', () => openPanel(false));
     document.addEventListener('keydown', (e) => { if (e.key === 'Escape') openPanel(false); });
+    panel.addEventListener('click', (e) => { if (e.target.tagName === 'A') openPanel(false); });
 
-    // close panel when a link is tapped
-    panel.addEventListener('click', (e) => {
-      if (e.target.tagName === 'A') openPanel(false);
-    });
+    // Active link highlighting (desktop + panel)
+    function setActiveLinks() {
+      const path = location.pathname.replace(/\/+$/,'/') || '/';
+      document.querySelectorAll('[data-route]').forEach(a => {
+        const route = a.getAttribute('data-route');
+        // Mark active if exact match, or if route is "/" and path is exactly "/"
+        const active = (route === '/' && path === '/') || (route !== '/' && path.startsWith(route));
+        a.classList.toggle('active', active);
+      });
+    }
+    setActiveLinks();
   </script>
 </body>
 </html>
