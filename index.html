@@ -23,7 +23,7 @@
 </head>
 <body>
   <header class="site-header">
-    <!-- top bar: left = menu button, center = wordmark -->
+    <!-- top bar: left = fixed menu button, center = wordmark -->
     <div class="brand">
       <button class="icon-btn menu-btn" id="menuToggle"
               aria-label="Open menu" aria-expanded="false" aria-controls="panel">
@@ -46,14 +46,14 @@
       </a>
     </div>
 
-    <!-- centered desktop nav -->
+    <!-- centered desktop nav (no active highlight here) -->
     <nav class="nav desktop-nav" aria-label="Primary">
-      <a href="/" data-route="/">Home</a>
-      <a href="/mechanisms/" data-route="/mechanisms/">Mechanisms</a>
-      <a href="/figures/" data-route="/figures/">Figures</a>
-      <a href="/numbers/" data-route="/numbers/">Numbers</a>
-      <a href="/dossiers/" data-route="/dossiers/">Dossiers</a>
-      <a class="tips" href="mailto:tips@corridorledger.com">Tips</a>
+      <a href="/">Home</a>
+      <a href="/mechanisms/">Mechanisms</a>
+      <a href="/figures/">Figures</a>
+      <a href="/numbers/">Numbers</a>
+      <a href="/dossiers/">Dossiers</a>
+      <a href="mailto:tips@corridorledger.com">Tips</a>
     </nav>
 
     <!-- LEFT slide-over panel (mobile): search at top, then nav links -->
@@ -70,7 +70,7 @@
           <a href="/figures/" data-route="/figures/">Figures</a>
           <a href="/numbers/" data-route="/numbers/">Numbers</a>
           <a href="/dossiers/" data-route="/dossiers/">Dossiers</a>
-          <a class="tips" href="mailto:tips@corridorledger.com">Tips</a>
+          <a href="mailto:tips@corridorledger.com">Tips</a>
         </nav>
       </div>
     </aside>
@@ -82,14 +82,17 @@
       <article class="hero hero-center">
         <h1 class="headline">The Ledger Opens.</h1>
         <p class="dek">We’re building the first batch of stories now. Launches September 5, 2025.</p>
-        <p class="muted">Have a document we should see? <a href="mailto:tips@corridorledger.com">tips@corridorledger.com</a></p>
+        <p class="muted">
+          Have a document we should see?
+          <a href="mailto:tips@corridorledger.com">tips@corridorledger.com</a>
+        </p>
       </article>
     </section>
 
     <section class="rail cta">
       <div class="cta-box">
-        <h2>Power, documented.</h2>
-        <p class="muted">One issue per week. Evidence first.</p>
+        <h2 class="cta-heading">Power, documented.</h2>
+        <p class="muted same-as-heading">One issue per week. Evidence first.</p>
         <form onsubmit="return false" aria-label="Newsletter signup">
           <input type="email" placeholder="you@email.com" aria-label="Email" inputmode="email" />
           <button type="submit">Notify me</button>
@@ -100,7 +103,9 @@
 
   <footer class="site-footer">
     <div class="foot-left">
-      <a href="feed.xml">RSS</a> · <a href="#">Corrections</a> · <a href="mailto:editor@corridorledger.com">Editor</a> · <a href="mailto:tips@corridorledger.com">Tips</a>
+      <a href="feed.xml">RSS</a> · <a href="#">Corrections</a> ·
+      <a href="mailto:editor@corridorledger.com">Editor</a> ·
+      <a href="mailto:tips@corridorledger.com">Tips</a>
     </div>
     <div class="foot-right">
       © 2025 Corridor Ledger
@@ -122,7 +127,10 @@
       menuToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
       panel.setAttribute('aria-hidden', open ? 'false' : 'true');
       backdrop.setAttribute('aria-hidden', open ? 'false' : 'true');
-      if (open) panel.querySelector('.search-input')?.focus();
+      if (open) {
+        markActiveInPanel();
+        panel.querySelector('.search-input')?.focus();
+      }
     }
     menuToggle.addEventListener('click', () => openPanel(!panel.classList.contains('open')));
     panelClose.addEventListener('click', () => openPanel(false));
@@ -130,17 +138,15 @@
     document.addEventListener('keydown', (e) => { if (e.key === 'Escape') openPanel(false); });
     panel.addEventListener('click', (e) => { if (e.target.tagName === 'A') openPanel(false); });
 
-    // Active link highlighting (desktop + panel)
-    function setActiveLinks() {
+    // Mark active link ONLY in panel (not desktop nav)
+    function markActiveInPanel() {
       const path = location.pathname.replace(/\/+$/,'/') || '/';
-      document.querySelectorAll('[data-route]').forEach(a => {
+      document.querySelectorAll('.panel-nav [data-route]').forEach(a => {
         const route = a.getAttribute('data-route');
-        // Mark active if exact match, or if route is "/" and path is exactly "/"
         const active = (route === '/' && path === '/') || (route !== '/' && path.startsWith(route));
         a.classList.toggle('active', active);
       });
     }
-    setActiveLinks();
   </script>
 </body>
 </html>
