@@ -9,7 +9,6 @@
   <!-- Favicons -->
   <link rel="icon" href="favicon.ico" type="image/x-icon" />
   <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png" />
-  <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png" />
   <link rel="apple-touch-icon" sizes="180x180" href="favicon-180x180.png" />
   <meta name="theme-color" content="#ffffff" />
 
@@ -23,12 +22,9 @@
   <meta name="twitter:card" content="summary_large_image">
 </head>
 <body>
-  <!-- Skip link for accessibility -->
-  <a class="skip-link" href="#main">Skip to content</a>
-
   <header class="site-header">
+    <!-- top bar: centered wordmark + menu button on the right -->
     <div class="brand">
-      <!-- Wordmark links to homepage -->
       <a href="/" class="logo-link" aria-label="Corridor Ledger home">
         <img
           src="wordmark_header_1200w.png"
@@ -36,7 +32,7 @@
                   wordmark_header_800w.png 800w,
                   wordmark_header_1200w.png 1200w,
                   wordmark_header.png 2000w"
-          sizes="(max-width: 900px) 60vw, 560px"
+          sizes="(max-width: 900px) 70vw, 560px"
           alt="Corridor Ledger"
           class="wordmark"
           decoding="async"
@@ -44,28 +40,13 @@
         />
       </a>
 
-      <div class="header-actions">
-        <button class="icon-btn" id="searchToggle"
-                aria-label="Open search" aria-expanded="false" aria-controls="searchPanel">
-          🔍
-        </button>
-
-        <button class="icon-btn" id="menuToggle"
-                aria-label="Open menu" aria-expanded="false" aria-controls="mobileMenu">
-          ☰
-        </button>
-      </div>
+      <button class="icon-btn menu-btn" id="menuToggle"
+              aria-label="Open menu" aria-expanded="false" aria-controls="panel">
+        ☰
+      </button>
     </div>
 
-    <!-- Collapsible search -->
-    <div class="search-panel" id="searchPanel" hidden>
-      <form onsubmit="return false" role="search" aria-label="Site search">
-        <input class="search-input" type="search" placeholder="Search Corridor Ledger" />
-        <button class="search-close" type="button" id="searchClose" aria-label="Close search">✕</button>
-      </form>
-    </div>
-
-    <!-- Desktop nav -->
+    <!-- centered desktop nav -->
     <nav class="nav desktop-nav" aria-label="Primary">
       <a href="#">Mechanisms</a>
       <a href="#">Figures</a>
@@ -74,20 +55,30 @@
       <a class="tips" href="mailto:tips@corridorledger.com">Tips</a>
     </nav>
 
-    <!-- Mobile menu drawer -->
-    <nav class="mobile-menu" id="mobileMenu" aria-label="Mobile primary" hidden>
-      <a href="#">Mechanisms</a>
-      <a href="#">Figures</a>
-      <a href="#">Numbers</a>
-      <a href="#">Dossiers</a>
-      <a class="tips" href="mailto:tips@corridorledger.com">Tips</a>
-    </nav>
+    <!-- slide-over panel (mobile): search at top, then nav links -->
+    <aside class="panel" id="panel" hidden>
+      <div class="panel-inner">
+        <form class="panel-search" onsubmit="return false" role="search" aria-label="Site search">
+          <input class="search-input" type="search" placeholder="Search Corridor Ledger" />
+          <button class="panel-close" type="button" id="panelClose" aria-label="Close">✕</button>
+        </form>
+
+        <nav class="panel-nav" aria-label="Mobile primary">
+          <a href="#">Mechanisms</a>
+          <a href="#">Figures</a>
+          <a href="#">Numbers</a>
+          <a href="#">Dossiers</a>
+          <a class="tips" href="mailto:tips@corridorledger.com">Tips</a>
+        </nav>
+      </div>
+    </aside>
+    <div class="panel-backdrop" id="backdrop" hidden></div>
   </header>
 
   <main id="main" class="container">
     <section class="rail">
       <article class="hero hero-center">
-        <h1>The Ledger Opens.</h1>
+        <h1 class="headline">The Ledger Opens.</h1>
         <p class="dek">We’re building the first batch of stories now. Launches September 5, 2025.</p>
         <p class="muted">Have a document we should see? <a href="mailto:tips@corridorledger.com">tips@corridorledger.com</a></p>
       </article>
@@ -115,54 +106,27 @@
   </footer>
 
   <script>
-    // Toggle search
-    const searchToggle = document.getElementById('searchToggle');
-    const searchPanel  = document.getElementById('searchPanel');
-    const searchClose  = document.getElementById('searchClose');
-
-    function openSearch(open) {
-      if (open) {
-        searchPanel.hidden = false;
-        searchToggle.setAttribute('aria-expanded', 'true');
-        searchPanel.querySelector('input').focus();
-        document.body.classList.add('no-scroll');
-      } else {
-        searchPanel.hidden = true;
-        searchToggle.setAttribute('aria-expanded', 'false');
-        document.body.classList.remove('no-scroll');
-      }
-    }
-    searchToggle?.addEventListener('click', () => openSearch(searchPanel.hidden));
-    searchClose?.addEventListener('click', () => openSearch(false));
-
-    // Toggle mobile menu
     const menuToggle = document.getElementById('menuToggle');
-    const mobileMenu = document.getElementById('mobileMenu');
+    const panel = document.getElementById('panel');
+    const panelClose = document.getElementById('panelClose');
+    const backdrop = document.getElementById('backdrop');
 
-    function openMenu(open) {
-      if (open) {
-        mobileMenu.hidden = false;
-        menuToggle.setAttribute('aria-expanded', 'true');
-        document.body.classList.add('no-scroll');
-      } else {
-        mobileMenu.hidden = true;
-        menuToggle.setAttribute('aria-expanded', 'false');
-        document.body.classList.remove('no-scroll');
-      }
+    function openPanel(open) {
+      panel.hidden = !open;
+      backdrop.hidden = !open;
+      menuToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+      document.body.classList.toggle('no-scroll', open);
+      if (open) panel.querySelector('.search-input').focus();
     }
-    menuToggle?.addEventListener('click', () => openMenu(mobileMenu.hidden));
 
-    // Close panels on escape
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') {
-        openSearch(false);
-        openMenu(false);
-      }
-    });
+    menuToggle.addEventListener('click', () => openPanel(panel.hidden));
+    panelClose.addEventListener('click', () => openPanel(false));
+    backdrop.addEventListener('click', () => openPanel(false));
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape') openPanel(false); });
 
-    // Close mobile menu when a link is tapped
-    mobileMenu?.addEventListener('click', (e) => {
-      if (e.target.tagName === 'A') openMenu(false);
+    // close panel when a link is tapped
+    panel.addEventListener('click', (e) => {
+      if (e.target.tagName === 'A') openPanel(false);
     });
   </script>
 </body>
