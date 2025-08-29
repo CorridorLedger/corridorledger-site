@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -9,7 +9,8 @@
   <!-- Favicons -->
   <link rel="icon" href="favicon.ico" type="image/x-icon" />
   <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png" />
-  <link rel="apple-touch-icon" sizes="180x180" href="favicon-180x180.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png" media="(prefers-color-scheme: light)">
+  <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon-dark.png" media="(prefers-color-scheme: dark)">
   <meta name="theme-color" content="#ffffff" />
 
   <!-- Styles -->
@@ -23,30 +24,38 @@
 </head>
 <body>
   <header class="site-header">
-    <!-- top bar: left = fixed menu button, center = wordmark -->
+    <!-- top bar: fixed menu button (top-left), centered wordmark, theme toggle (top-right) -->
     <div class="brand">
       <button class="icon-btn menu-btn" id="menuToggle"
-              aria-label="Open menu" aria-expanded="false" aria-controls="panel">
+              aria-label="Open menu" aria-expanded="false" aria-controls="dropdown">
         ☰
       </button>
 
+      <!-- Auto-swap wordmark for dark mode -->
       <a href="/" class="logo-link" aria-label="Corridor Ledger home">
-        <img
-          src="wordmark_header_1200w.png"
-          srcset="wordmark_header_512w.png 512w,
-                  wordmark_header_800w.png 800w,
-                  wordmark_header_1200w.png 1200w,
-                  wordmark_header.png 2000w"
-          sizes="(max-width: 900px) 70vw, 560px"
-          alt="Corridor Ledger"
-          class="wordmark"
-          decoding="async"
-          loading="eager"
-        />
+        <picture>
+          <source srcset="wordmark_header_dark_1200w.png" media="(prefers-color-scheme: dark)">
+          <img
+            src="wordmark_header_1200w.png"
+            srcset="wordmark_header_512w.png 512w,
+                    wordmark_header_800w.png 800w,
+                    wordmark_header_1200w.png 1200w,
+                    wordmark_header.png 2000w"
+            sizes="(max-width: 900px) 70vw, 560px"
+            alt="Corridor Ledger"
+            class="wordmark"
+            decoding="async"
+            loading="eager"
+          />
+        </picture>
       </a>
+
+      <button class="icon-btn theme-btn" id="themeToggle" aria-label="Toggle dark mode">
+        🌙
+      </button>
     </div>
 
-    <!-- centered desktop nav (no active highlight here) -->
+    <!-- centered desktop nav (no highlight on current page) -->
     <nav class="nav desktop-nav" aria-label="Primary">
       <a href="/">Home</a>
       <a href="/mechanisms/">Mechanisms</a>
@@ -56,25 +65,22 @@
       <a href="mailto:tips@corridorledger.com">Tips</a>
     </nav>
 
-    <!-- LEFT slide-over panel (mobile): search at top, then nav links -->
-    <aside class="panel" id="panel" aria-hidden="true">
-      <div class="panel-inner">
-        <form class="panel-search" onsubmit="return false" role="search" aria-label="Site search">
-          <input class="search-input" type="search" placeholder="Search Corridor Ledger" />
-          <button class="panel-close" type="button" id="panelClose" aria-label="Close">✕</button>
-        </form>
+    <!-- Dropdown under the menu button (opens beneath, like WaPo) -->
+    <div class="dropdown" id="dropdown" aria-hidden="true">
+      <form class="dropdown-search" onsubmit="return false" role="search" aria-label="Site search">
+        <input class="search-input" type="search" placeholder="Search Corridor Ledger" />
+      </form>
 
-        <nav class="panel-nav" aria-label="Mobile primary">
-          <a href="/" data-route="/">Home</a>
-          <a href="/mechanisms/" data-route="/mechanisms/">Mechanisms</a>
-          <a href="/figures/" data-route="/figures/">Figures</a>
-          <a href="/numbers/" data-route="/numbers/">Numbers</a>
-          <a href="/dossiers/" data-route="/dossiers/">Dossiers</a>
-          <a href="mailto:tips@corridorledger.com">Tips</a>
-        </nav>
-      </div>
-    </aside>
-    <div class="panel-backdrop" id="backdrop" aria-hidden="true"></div>
+      <nav class="dropdown-nav" aria-label="Mobile primary">
+        <a href="/" data-route="/">Home</a>
+        <a href="/mechanisms/" data-route="/mechanisms/">Mechanisms</a>
+        <a href="/figures/" data-route="/figures/">Figures</a>
+        <a href="/numbers/" data-route="/numbers/">Numbers</a>
+        <a href="/dossiers/" data-route="/dossiers/">Dossiers</a>
+        <a href="mailto:tips@corridorledger.com">Tips</a>
+      </nav>
+    </div>
+    <div class="dropdown-backdrop" id="backdrop" aria-hidden="true"></div>
   </header>
 
   <main id="main" class="container">
@@ -113,40 +119,58 @@
   </footer>
 
   <script>
-    // Elements
+    // Dropdown open/close
     const menuToggle = document.getElementById('menuToggle');
-    const panel = document.getElementById('panel');
-    const panelClose = document.getElementById('panelClose');
-    const backdrop = document.getElementById('backdrop');
+    const dropdown   = document.getElementById('dropdown');
+    const backdrop   = document.getElementById('backdrop');
 
-    // Open/close with slide animation
-    function openPanel(open) {
-      document.body.classList.toggle('no-scroll', open);
-      panel.classList.toggle('open', open);
+    function openDropdown(open) {
+      dropdown.classList.toggle('open', open);
       backdrop.classList.toggle('show', open);
       menuToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
-      panel.setAttribute('aria-hidden', open ? 'false' : 'true');
-      backdrop.setAttribute('aria-hidden', open ? 'false' : 'true');
+      dropdown.setAttribute('aria-hidden', open ? 'false' : 'true');
       if (open) {
-        markActiveInPanel();
-        panel.querySelector('.search-input')?.focus();
+        markActiveInDropdown();
+        dropdown.querySelector('.search-input')?.focus();
       }
     }
-    menuToggle.addEventListener('click', () => openPanel(!panel.classList.contains('open')));
-    panelClose.addEventListener('click', () => openPanel(false));
-    backdrop.addEventListener('click', () => openPanel(false));
-    document.addEventListener('keydown', (e) => { if (e.key === 'Escape') openPanel(false); });
-    panel.addEventListener('click', (e) => { if (e.target.tagName === 'A') openPanel(false); });
+    menuToggle.addEventListener('click', () => openDropdown(!dropdown.classList.contains('open')));
+    backdrop.addEventListener('click', () => openDropdown(false));
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape') openDropdown(false); });
+    dropdown.addEventListener('click', (e) => { if (e.target.tagName === 'A') openDropdown(false); });
 
-    // Mark active link ONLY in panel (not desktop nav)
-    function markActiveInPanel() {
+    // Active link ONLY in dropdown
+    function markActiveInDropdown() {
       const path = location.pathname.replace(/\/+$/,'/') || '/';
-      document.querySelectorAll('.panel-nav [data-route]').forEach(a => {
+      document.querySelectorAll('.dropdown-nav [data-route]').forEach(a => {
         const route = a.getAttribute('data-route');
         const active = (route === '/' && path === '/') || (route !== '/' && path.startsWith(route));
         a.classList.toggle('active', active);
       });
     }
+
+    // Theme toggle (light/dark) with localStorage
+    const themeToggle = document.getElementById('themeToggle');
+    const root = document.documentElement;
+
+    // init from storage or system
+    (function initTheme(){
+      const saved = localStorage.getItem('cl-theme');
+      if (saved === 'dark' || saved === 'light') {
+        root.setAttribute('data-theme', saved);
+        themeToggle.textContent = saved === 'dark' ? '☀️' : '🌙';
+      } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        root.setAttribute('data-theme', 'dark');
+        themeToggle.textContent = '☀️';
+      }
+    })();
+
+    themeToggle.addEventListener('click', () => {
+      const next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+      root.setAttribute('data-theme', next);
+      localStorage.setItem('cl-theme', next);
+      themeToggle.textContent = next === 'dark' ? '☀️' : '🌙';
+    });
   </script>
 </body>
 </html>
