@@ -3,15 +3,15 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>The Corridor Ledger</title>
+  <title>Corridor Ledger</title>
   <meta name="description" content="Corridor Ledger investigates the unseen machinery of power—contracts, committees, and quiet capital—so readers can see how decisions are actually made.">
 
   <!-- Favicons -->
-  <!-- Favicon (cross-browser + iOS/Android friendly) -->
-  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-  <link rel="icon" href="/favicon.ico" sizes="any">
+  <link rel="icon" href="favicon.ico" type="image/x-icon" />
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="favicon-180x180.png" />
+  <meta name="theme-color" content="#ffffff" />
 
   <!-- Styles -->
   <link rel="stylesheet" href="main.css" />
@@ -19,55 +19,87 @@
   <!-- Social sharing -->
   <meta property="og:title" content="Corridor Ledger">
   <meta property="og:description" content="Power, documented.">
-  <meta property="og:image" content="C_3072h_white.png">
+  <meta property="og:image" content="wordmark_header_1200w.png">
   <meta name="twitter:card" content="summary_large_image">
 </head>
 <body>
+  <!-- Skip link for accessibility -->
+  <a class="skip-link" href="#main">Skip to content</a>
+
   <header class="site-header">
     <div class="brand">
-      <img
-        src="wordmark_header_1200w.png"
-        srcset="wordmark_header_512w.png 512w,
-                wordmark_header_800w.png 800w,
-                wordmark_header_1200w.png 1200w,
-                wordmark_header.png 2000w"
-        sizes="(max-width: 900px) 80vw, 560px"
-        alt="Corridor Ledger"
-        class="wordmark"
-        loading="eager"
-        decoding="async"
-      />
-      <nav class="nav" aria-label="Primary">
-        <a href="#">Mechanisms</a>
-        <a href="#">Figures</a>
-        <a href="#">Numbers</a>
-        <a href="#">Dossiers</a>
-        <a class="tips" href="mailto:tips@corridorledger.com">Tips</a>
-      </nav>
+      <!-- Wordmark links to homepage -->
+      <a href="/" class="logo-link" aria-label="Corridor Ledger home">
+        <img
+          src="wordmark_header_1200w.png"
+          srcset="wordmark_header_512w.png 512w,
+                  wordmark_header_800w.png 800w,
+                  wordmark_header_1200w.png 1200w,
+                  wordmark_header.png 2000w"
+          sizes="(max-width: 900px) 60vw, 560px"
+          alt="Corridor Ledger"
+          class="wordmark"
+          decoding="async"
+          loading="eager"
+        />
+      </a>
+
+      <div class="header-actions">
+        <button class="icon-btn" id="searchToggle"
+                aria-label="Open search" aria-expanded="false" aria-controls="searchPanel">
+          🔍
+        </button>
+
+        <button class="icon-btn" id="menuToggle"
+                aria-label="Open menu" aria-expanded="false" aria-controls="mobileMenu">
+          ☰
+        </button>
+      </div>
     </div>
-    <div class="tools">
-      <input class="search" type="search" placeholder="Search" aria-label="Search" />
+
+    <!-- Collapsible search -->
+    <div class="search-panel" id="searchPanel" hidden>
+      <form onsubmit="return false" role="search" aria-label="Site search">
+        <input class="search-input" type="search" placeholder="Search Corridor Ledger" />
+        <button class="search-close" type="button" id="searchClose" aria-label="Close search">✕</button>
+      </form>
     </div>
+
+    <!-- Desktop nav -->
+    <nav class="nav desktop-nav" aria-label="Primary">
+      <a href="#">Mechanisms</a>
+      <a href="#">Figures</a>
+      <a href="#">Numbers</a>
+      <a href="#">Dossiers</a>
+      <a class="tips" href="mailto:tips@corridorledger.com">Tips</a>
+    </nav>
+
+    <!-- Mobile menu drawer -->
+    <nav class="mobile-menu" id="mobileMenu" aria-label="Mobile primary" hidden>
+      <a href="#">Mechanisms</a>
+      <a href="#">Figures</a>
+      <a href="#">Numbers</a>
+      <a href="#">Dossiers</a>
+      <a class="tips" href="mailto:tips@corridorledger.com">Tips</a>
+    </nav>
   </header>
 
-  <main class="container">
-    <!-- Coming soon hero -->
+  <main id="main" class="container">
     <section class="rail">
-      <article class="hero" style="text-align:center">
+      <article class="hero hero-center">
         <h1>The Ledger Opens.</h1>
         <p class="dek">We’re building the first batch of stories now. Launches September 5, 2025.</p>
         <p class="muted">Have a document we should see? <a href="mailto:tips@corridorledger.com">tips@corridorledger.com</a></p>
       </article>
     </section>
 
-    <!-- CTA -->
     <section class="rail cta">
       <div class="cta-box">
         <h2>Power, documented.</h2>
         <p class="muted">One issue per week. Evidence first.</p>
-        <form onsubmit="return false;" aria-label="Newsletter signup">
+        <form onsubmit="return false" aria-label="Newsletter signup">
           <input type="email" placeholder="you@email.com" aria-label="Email" inputmode="email" />
-          <button type="submit">Subscribe</button>
+          <button type="submit">Notify me</button>
         </form>
       </div>
     </section>
@@ -81,5 +113,57 @@
       © 2025 Corridor Ledger
     </div>
   </footer>
+
+  <script>
+    // Toggle search
+    const searchToggle = document.getElementById('searchToggle');
+    const searchPanel  = document.getElementById('searchPanel');
+    const searchClose  = document.getElementById('searchClose');
+
+    function openSearch(open) {
+      if (open) {
+        searchPanel.hidden = false;
+        searchToggle.setAttribute('aria-expanded', 'true');
+        searchPanel.querySelector('input').focus();
+        document.body.classList.add('no-scroll');
+      } else {
+        searchPanel.hidden = true;
+        searchToggle.setAttribute('aria-expanded', 'false');
+        document.body.classList.remove('no-scroll');
+      }
+    }
+    searchToggle?.addEventListener('click', () => openSearch(searchPanel.hidden));
+    searchClose?.addEventListener('click', () => openSearch(false));
+
+    // Toggle mobile menu
+    const menuToggle = document.getElementById('menuToggle');
+    const mobileMenu = document.getElementById('mobileMenu');
+
+    function openMenu(open) {
+      if (open) {
+        mobileMenu.hidden = false;
+        menuToggle.setAttribute('aria-expanded', 'true');
+        document.body.classList.add('no-scroll');
+      } else {
+        mobileMenu.hidden = true;
+        menuToggle.setAttribute('aria-expanded', 'false');
+        document.body.classList.remove('no-scroll');
+      }
+    }
+    menuToggle?.addEventListener('click', () => openMenu(mobileMenu.hidden));
+
+    // Close panels on escape
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        openSearch(false);
+        openMenu(false);
+      }
+    });
+
+    // Close mobile menu when a link is tapped
+    mobileMenu?.addEventListener('click', (e) => {
+      if (e.target.tagName === 'A') openMenu(false);
+    });
+  </script>
 </body>
 </html>
