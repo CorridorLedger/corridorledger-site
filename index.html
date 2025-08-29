@@ -24,38 +24,44 @@
 </head>
 <body>
   <header class="site-header">
-    <!-- top bar: fixed menu button (top-left), centered wordmark, theme toggle (top-right) -->
+    <!-- top bar: fixed top-left menu, centered wordmark, top-right theme toggle -->
     <div class="brand">
       <button class="icon-btn menu-btn" id="menuToggle"
               aria-label="Open menu" aria-expanded="false" aria-controls="dropdown">
         ☰
       </button>
 
-      <!-- Auto-swap wordmark for dark mode -->
+      <!-- Both wordmarks present; CSS shows the correct one by theme -->
       <a href="/" class="logo-link" aria-label="Corridor Ledger home">
-        <picture>
-          <source srcset="wordmark_header_dark_1200w.png" media="(prefers-color-scheme: dark)">
-          <img
-            src="wordmark_header_1200w.png"
-            srcset="wordmark_header_512w.png 512w,
-                    wordmark_header_800w.png 800w,
-                    wordmark_header_1200w.png 1200w,
-                    wordmark_header.png 2000w"
-            sizes="(max-width: 900px) 70vw, 560px"
-            alt="Corridor Ledger"
-            class="wordmark"
-            decoding="async"
-            loading="eager"
-          />
-        </picture>
+        <img
+          src="wordmark_header_1200w.png"
+          srcset="wordmark_header_512w.png 512w,
+                  wordmark_header_800w.png 800w,
+                  wordmark_header_1200w.png 1200w,
+                  wordmark_header.png 2000w"
+          sizes="(max-width: 900px) 70vw, 560px"
+          alt="Corridor Ledger"
+          class="wordmark wordmark-light"
+          decoding="async"
+          loading="eager"
+        />
+        <img
+          src="wordmark_header_dark_1200w.png"
+          alt="Corridor Ledger"
+          class="wordmark wordmark-dark"
+          decoding="async"
+          loading="eager"
+        />
       </a>
 
+      <!-- Theme toggle uses your simple icons -->
       <button class="icon-btn theme-btn" id="themeToggle" aria-label="Toggle dark mode">
-        🌙
+        <img src="sun-icon-simple-outline-style-brightness-symbol-intensity-setting-bright-light-heat-energy-concept-line-illustration-isolated-on-white-background-eps-10-vector-4285491907.jpeg" alt="" class="theme-icon theme-icon-sun" />
+        <img src="moon-icon-simple-outline-style-half-moon-crescent-moon-star-light-flat-design-night-sleep-time-concept-thin-line-illustration-isolated-on-white-background-eps-10-vector-3039231804.jpeg" alt="" class="theme-icon theme-icon-moon" />
       </button>
     </div>
 
-    <!-- centered desktop nav (no highlight on current page) -->
+    <!-- centered desktop nav (no active highlight here) -->
     <nav class="nav desktop-nav" aria-label="Primary">
       <a href="/">Home</a>
       <a href="/mechanisms/">Mechanisms</a>
@@ -65,7 +71,7 @@
       <a href="mailto:tips@corridorledger.com">Tips</a>
     </nav>
 
-    <!-- Dropdown under the menu button (opens beneath, like WaPo) -->
+    <!-- Dropdown under the menu button (opens beneath) -->
     <div class="dropdown" id="dropdown" aria-hidden="true">
       <form class="dropdown-search" onsubmit="return false" role="search" aria-label="Site search">
         <input class="search-input" type="search" placeholder="Search Corridor Ledger" />
@@ -119,11 +125,14 @@
   </footer>
 
   <script>
-    // Dropdown open/close
+    // Elements
     const menuToggle = document.getElementById('menuToggle');
     const dropdown   = document.getElementById('dropdown');
     const backdrop   = document.getElementById('backdrop');
+    const themeToggle = document.getElementById('themeToggle');
+    const root = document.documentElement;
 
+    // Dropdown open/close
     function openDropdown(open) {
       dropdown.classList.toggle('open', open);
       backdrop.classList.toggle('show', open);
@@ -150,18 +159,12 @@
     }
 
     // Theme toggle (light/dark) with localStorage
-    const themeToggle = document.getElementById('themeToggle');
-    const root = document.documentElement;
-
-    // init from storage or system
     (function initTheme(){
       const saved = localStorage.getItem('cl-theme');
       if (saved === 'dark' || saved === 'light') {
         root.setAttribute('data-theme', saved);
-        themeToggle.textContent = saved === 'dark' ? '☀️' : '🌙';
       } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
         root.setAttribute('data-theme', 'dark');
-        themeToggle.textContent = '☀️';
       }
     })();
 
@@ -169,7 +172,6 @@
       const next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
       root.setAttribute('data-theme', next);
       localStorage.setItem('cl-theme', next);
-      themeToggle.textContent = next === 'dark' ? '☀️' : '🌙';
     });
   </script>
 </body>
