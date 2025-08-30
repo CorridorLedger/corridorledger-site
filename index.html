@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>The Corridor Ledger</title>
+  <title>Corridor Ledger</title>
   <meta name="description" content="Corridor Ledger investigates the unseen machinery of power—contracts, committees, and quiet capital—so readers can see how decisions are actually made.">
 
   <!-- Favicons -->
@@ -24,14 +24,14 @@
 </head>
 <body>
   <header class="site-header">
-    <!-- top bar: fixed top-left menu, centered wordmark, top-right theme toggle -->
     <div class="brand">
+      <!-- top-left menu button -->
       <button class="icon-btn menu-btn" id="menuToggle"
               aria-label="Open menu" aria-expanded="false" aria-controls="dropdown">
         ☰
       </button>
 
-      <!-- Both wordmarks present; CSS shows the correct one by theme -->
+      <!-- centered wordmark: light & dark versions -->
       <a href="/" class="logo-link" aria-label="Corridor Ledger home">
         <img
           src="wordmark_header_1200w.png"
@@ -54,14 +54,14 @@
         />
       </a>
 
-      <!-- Theme toggle uses your simple icons -->
+      <!-- top-right theme toggle (sun/moon images only; no outline) -->
       <button class="icon-btn theme-btn" id="themeToggle" aria-label="Toggle dark mode">
-        <img src="black_sun_icon.png" alt="" class="theme-icon theme-icon-sun" />
-        <img src="white_moon_icon.png" alt="" class="theme-icon theme-icon-moon" />
+        <img src="sun_grunge_black_transparent.png" alt="" class="theme-icon theme-icon-sun" />
+        <img src="moon_grunge_white_transparent.png" alt="" class="theme-icon theme-icon-moon" />
       </button>
     </div>
 
-    <!-- centered desktop nav (no active highlight here) -->
+    <!-- centered desktop nav -->
     <nav class="nav desktop-nav" aria-label="Primary">
       <a href="/">Home</a>
       <a href="/mechanisms/">Mechanisms</a>
@@ -71,7 +71,7 @@
       <a href="mailto:tips@corridorledger.com">Tips</a>
     </nav>
 
-    <!-- Dropdown under the menu button (opens beneath) -->
+    <!-- dropdown under menu button -->
     <div class="dropdown" id="dropdown" aria-hidden="true">
       <form class="dropdown-search" onsubmit="return false" role="search" aria-label="Site search">
         <input class="search-input" type="search" placeholder="Search Corridor Ledger" />
@@ -125,14 +125,12 @@
   </footer>
 
   <script>
-    // Elements
     const menuToggle = document.getElementById('menuToggle');
     const dropdown   = document.getElementById('dropdown');
     const backdrop   = document.getElementById('backdrop');
     const themeToggle = document.getElementById('themeToggle');
     const root = document.documentElement;
 
-    // Dropdown open/close
     function openDropdown(open) {
       dropdown.classList.toggle('open', open);
       backdrop.classList.toggle('show', open);
@@ -148,7 +146,6 @@
     document.addEventListener('keydown', (e) => { if (e.key === 'Escape') openDropdown(false); });
     dropdown.addEventListener('click', (e) => { if (e.target.tagName === 'A') openDropdown(false); });
 
-    // Active link ONLY in dropdown
     function markActiveInDropdown() {
       const path = location.pathname.replace(/\/+$/,'/') || '/';
       document.querySelectorAll('.dropdown-nav [data-route]').forEach(a => {
@@ -158,7 +155,7 @@
       });
     }
 
-    // Theme toggle (light/dark) with localStorage
+    // theme init + toggle
     (function initTheme(){
       const saved = localStorage.getItem('cl-theme');
       if (saved === 'dark' || saved === 'light') {
@@ -167,7 +164,6 @@
         root.setAttribute('data-theme', 'dark');
       }
     })();
-
     themeToggle.addEventListener('click', () => {
       const next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
       root.setAttribute('data-theme', next);
