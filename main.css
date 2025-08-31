@@ -180,3 +180,18 @@ a:hover{ text-decoration: underline; }
   .theme-btn{right:6px; top:6px}
   .site-footer{font-size:.92rem}
 }
+
+/* NAV hover: no underline, gentle bold + grow + tile highlight */
+.desktop-nav a,
+.dropdown-nav a{
+  text-decoration:none;
+  transition: background .15s ease, transform .12s ease, font-weight .12s ease;
+}
+
+.desktop-nav a:hover,
+.dropdown-nav a:hover{
+  text-decoration:none;
+  background:var(--tile-hover);
+  transform:translateY(-1px) scale(1.01);
+  font-weight:700;
+}
