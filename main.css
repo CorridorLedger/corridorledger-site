@@ -195,3 +195,43 @@ a:hover{ text-decoration: underline; }
   transform:translateY(-1px) scale(1.01);
   font-weight:700;
 }
+
+/* NAV hover: no underline, gentle bold + grow + tile highlight */
+.desktop-nav a,
+.dropdown-nav a{
+  text-decoration:none;
+  transition: background .15s ease, transform .12s ease, font-weight .12s ease;
+}
+.desktop-nav a:hover,
+.dropdown-nav a:hover{
+  text-decoration:none;
+  background:var(--tile-hover);
+  transform:translateY(-1px) scale(1.01);
+  font-weight:700;
+}
+
+/* CARDS (Issues grid & article tiles): kill underline on hover/click */
+.issues-grid a,
+.issue-card,
+.article-card{
+  text-decoration:none;
+  color:inherit;
+}
+.issues-grid a:hover,
+.issue-card:hover,
+.article-card:hover{
+  text-decoration:none;
+}
+
+/* Optional: make the card title gently “bolden” on hover */
+.issue-card:hover .issue-title,
+.article-card:hover .issue-title{
+  font-weight:700;
+}
+
+/* Already have a slight card lift; keep it */
+.issue-card:hover,
+.article-card:hover{
+  transform:translateY(-2px) scale(1.01);
+  box-shadow:0 8px 24px rgba(0,0,0,.16);
+}
