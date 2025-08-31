@@ -6,22 +6,20 @@
   --muted:#666;
   --border:#e7e7e7;
   --accent:#1d4ed8;      /* link color (light) */
-  --accent:#1d4ed8;
   --link: var(--accent);
+  --tile-hover:#f3f4f6;
 }
 
 /* Dark theme overrides — pure black to match the inverted wordmark */
 html[data-theme="dark"]{
   --bg:#000000;          /* page background */
   --paper:#000000;       /* surfaces/header match wordmark bg */
-  --bg:#000000;
-  --paper:#000000;
   --ink:#f5f5f5;
-  --muted:#aaaaaa;
+  --muted:#d0d0d0;
   --border:#262626;
   --accent:#9db4ff;      /* softer blue in dark */
-  --accent:#9db4ff;
   --link: var(--accent);
+  --tile-hover:#151515;
 }
 
 *{box-sizing:border-box}
@@ -49,50 +47,38 @@ body{
   display:flex; align-items:center; justify-content:center;
 }
 
-/* Buttons: remove thin outline/borders entirely */
+/* Buttons: remove visible outlines entirely */
 .icon-btn{
-  appearance:none;border:1px solid var(--border);background:var(--paper);
-  appearance:none;
-  border:0; outline:0;
-  background:transparent; /* just the icon */
-  color:var(--ink);
-  padding:8px 10px;border-radius:10px;font-size:18px;line-height:1;cursor:pointer;
-  padding:10px;           /* keep touch target */
-  border-radius:10px;     /* soft hit area but no visible stroke */
-  font-size:18px; line-height:1; cursor:pointer;
+  appearance:none; border:0; outline:0; background:transparent;
+  color:var(--ink); padding:10px; border-radius:10px; font-size:18px; line-height:1; cursor:pointer;
   z-index:100;
 }
-.icon-btn:focus{ outline:0; }
-.icon-btn:focus-visible{ outline:0; }
+.icon-btn:focus, .icon-btn:focus-visible{ outline:0; box-shadow:none; }
 
 /* Placement */
 .menu-btn{ position:fixed; left:8px; top:8px; }
 .theme-btn{ position:fixed; right:8px; top:8px; display:flex; align-items:center; gap:6px; }
 
 /* theme icons; show sun in light, moon in dark */
-.theme-icon{ width:20px; height:20px; display:none; object-fit:contain }
-/* theme icons: show sun in light, moon in dark */
 .theme-icon{ width:22px; height:22px; display:none; object-fit:contain }
 html[data-theme="light"] .theme-icon-sun{ display:inline-block }
 html[data-theme="dark"]  .theme-icon-moon{ display:inline-block }
 
 /* Wordmark */
 .wordmark{display:block;height:auto;max-width:min(70vw, 520px); margin:0 auto}
-.wordmark-dark{ display:none }  /* default hidden */
 .wordmark-dark{ display:none }
 html[data-theme="dark"] .wordmark-light{ display:none }
 html[data-theme="dark"] .wordmark-dark{ display:block }
 
-/* Centered desktop nav (no active highlight here) */
 /* Desktop nav */
 .desktop-nav{
   display:flex; gap:16px; justify-content:center;
   max-width:1100px; margin:0 auto; padding:0 16px 12px;
 }
 .desktop-nav a{color:var(--ink);text-decoration:none;padding:6px 8px;border-radius:8px}
+.desktop-nav a:hover{background:var(--tile-hover)}
 
-/* Dropdown below the menu button */
-/* Dropdown */
+/* Dropdown under the menu button */
 .dropdown-backdrop{
   position:fixed; inset:0; background:rgba(0,0,0,0); z-index:49;
   opacity:0; transition:opacity .2s ease; pointer-events:none;
@@ -100,9 +86,7 @@ html[data-theme="dark"] .wordmark-dark{ display:block }
 .dropdown-backdrop.show{ background:rgba(0,0,0,.25); opacity:1; pointer-events:auto; }
 
 .dropdown{
-  position:fixed;
-  top:52px; left:8px;      /* sits under the button */
-  position:fixed; top:52px; left:8px;
+  position:fixed; top:52px; left:8px;   /* sits under the button */
   width:min(92vw, 360px);
   background:var(--paper); color:var(--ink);
   border:1px solid var(--border); border-radius:12px;
@@ -121,17 +105,19 @@ html[data-theme="dark"] .wordmark-dark{ display:block }
 }
 
 .dropdown-nav{display:flex; flex-direction:column; padding:8px 12px; gap:8px}
+/* CLEAN tiles: no border; hover = gentle bold + grow + subtle bg */
 .dropdown-nav a{
   display:block; text-decoration:none; color:var(--ink); padding:12px 10px;
-  border:1px solid var(--border); border-radius:10px; background:var(--paper)
+  border:0; border-radius:10px; background:transparent;
+  transition:background .15s ease, transform .12s ease, color .15s ease;
 }
-.dropdown-nav a.active{border-color:var(--accent); color:var(--accent); font-weight:700}
+.dropdown-nav a:hover{background:var(--tile-hover); transform:translateY(-1px) scale(1.01); font-weight:700}
+.dropdown-nav a.active{background:var(--tile-hover); font-weight:700}
 
 /* LAYOUT */
 .container{max-width:900px;margin:0 auto;padding:16px; flex:1}
 .rail{margin-top:18px}
 
-/* hero centered */
 /* Hero */
 .hero{
   background:var(--paper); border:1px solid var(--border); border-radius:12px;
@@ -140,11 +126,21 @@ html[data-theme="dark"] .wordmark-dark{ display:block }
 .headline{margin:0 0 6px}
 .dek{opacity:.9;margin:6px 0 10px}
 .muted{color:var(--muted)}
-
-/* Global link color handling */
-/* Links */
 a{ color: var(--link); }
 a:hover{ text-decoration: underline; }
+
+/* Issues */
+.center{text-align:center}
+.issues-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+@media (max-width: 900px){ .issues-grid{grid-template-columns:1fr 1fr} }
+@media (max-width: 560px){ .issues-grid{grid-template-columns:1fr} }
+.issue-card{position:relative;display:block;background:var(--paper);border:1px solid var(--border);border-radius:12px;overflow:hidden;color:inherit;text-decoration:none;transition:transform .15s ease, box-shadow .15s ease}
+.issue-card:hover{transform:translateY(-2px) scale(1.01); box-shadow:0 8px 24px rgba(0,0,0,.16)}
+.issue-card img{display:block;width:100%;height:auto}
+.issue-meta{padding:12px}
+.issue-title{font-weight:700;margin-bottom:6px}
+.issue-tease{margin:0 0 8px;color:var(--ink)}
+.btn-ghost{font-weight:700}
 
 /* CTA */
 .cta .cta-box{
@@ -152,34 +148,35 @@ a:hover{ text-decoration: underline; }
   padding:18px; display:flex; align-items:center; justify-content:space-between;
   gap:12px; flex-wrap:wrap
 }
-/* equal sizing for heading + subtext */
-.cta .cta-heading{font-size:1rem; margin:0}
-.cta .same-as-heading{font-size:1rem; margin:0}
+/* equal size + correct color in both themes */
+.cta .cta-heading{font-size:1rem; margin:0; color:var(--ink)}
+.cta .same-as-heading{font-size:1rem; margin:0; color:var(--ink)}
 .cta input{
   padding:.6rem .8rem;border:1px solid var(--border);border-radius:8px;min-width:220px;
   background:var(--paper); color:var(--ink)
 }
-.cta button{padding:.6rem 1rem;border-radius:8px;border:0;background:var(--ink);color:var(--paper);font-weight:700}
+.cta button{
+  padding:.6rem 1rem;border-radius:8px;border:0;
+  background:var(--ink); color:var(--paper); font-weight:700
+}
 
 /* FOOTER pinned to bottom */
-/* FOOTER */
 .site-footer{
   border-top:1px solid var(--border); background:var(--paper); padding:18px 16px;
-  color:var(--muted); display:flex; justify-content:space-between; gap:12px
+  color:var(--ink); display:flex; justify-content:space-between; gap:12px
 }
 .site-footer a{color:var(--ink);text-decoration:none}
 
-/* RESPONSIVE */
 /* RESPONSIVE tweaks for a roomier mobile top bar */
 @media (max-width: 900px){
   .desktop-nav{display:none}
   .container{padding:14px}
-  .wordmark{max-width:78vw}
-  .wordmark{max-width:72vw} /* slightly smaller on mobile */
+  .wordmark{max-width:72vw}
 }
 @media (max-width: 560px){
-  .wordmark{max-width:66vw} /* a touch smaller on very small screens */
+  .wordmark{max-width:66vw}
   .brand{padding:10px 12px}
   .menu-btn{left:6px; top:6px}
   .theme-btn{right:6px; top:6px}
+  .site-footer{font-size:.92rem}
 }
