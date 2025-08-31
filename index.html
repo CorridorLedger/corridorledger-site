@@ -3,7 +3,6 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>The Corridor Ledger</title>
   <title>Corridor Ledger</title>
   <meta name="description" content="Corridor Ledger investigates the unseen machinery of power—contracts, committees, and quiet capital—so readers can see how decisions are actually made.">
 
@@ -33,8 +32,7 @@
         ☰
       </button>
 
-      <!-- Both wordmarks present; CSS shows the correct one by theme -->
-      <!-- centered wordmark: light & dark versions -->
+      <!-- centered wordmark: light & dark versions (swap via CSS) -->
       <a href="/" class="logo-link" aria-label="Corridor Ledger home">
         <img
           src="wordmark_header_1200w.png"
@@ -57,39 +55,36 @@
         />
       </a>
 
-      <!-- Theme toggle uses your simple icons -->
-      <!-- top-right theme toggle (sun/moon images only; no outline) -->
+      <!-- top-right theme toggle (images only; no outline) -->
       <button class="icon-btn theme-btn" id="themeToggle" aria-label="Toggle dark mode">
+        <!-- show sun in light mode, moon in dark mode -->
         <img src="sun_grunge_black_transparent.png" alt="" class="theme-icon theme-icon-sun" />
         <img src="moon_grunge_white_transparent.png" alt="" class="theme-icon theme-icon-moon" />
       </button>
     </div>
 
     <!-- centered desktop nav (no active highlight here) -->
-    <!-- centered desktop nav -->
     <nav class="nav desktop-nav" aria-label="Primary">
       <a href="/">Home</a>
       <a href="/mechanisms/">Mechanisms</a>
       <a href="/figures/">Figures</a>
       <a href="/numbers/">Numbers</a>
       <a href="/dossiers/">Dossiers</a>
-      <a href="mailto:tips@corridorledger.com">Tips</a>
+      <a href="/tips/">Tips</a>
     </nav>
 
     <!-- Dropdown under the menu button (opens beneath) -->
-    <!-- dropdown under menu button -->
     <div class="dropdown" id="dropdown" aria-hidden="true">
       <form class="dropdown-search" onsubmit="return false" role="search" aria-label="Site search">
         <input class="search-input" type="search" placeholder="Search Corridor Ledger" />
       </form>
-
       <nav class="dropdown-nav" aria-label="Mobile primary">
         <a href="/" data-route="/">Home</a>
         <a href="/mechanisms/" data-route="/mechanisms/">Mechanisms</a>
         <a href="/figures/" data-route="/figures/">Figures</a>
         <a href="/numbers/" data-route="/numbers/">Numbers</a>
         <a href="/dossiers/" data-route="/dossiers/">Dossiers</a>
-        <a href="mailto:tips@corridorledger.com">Tips</a>
+        <a href="/tips/" data-route="/tips/">Tips</a>
       </nav>
     </div>
     <div class="dropdown-backdrop" id="backdrop" aria-hidden="true"></div>
@@ -107,6 +102,22 @@
       </article>
     </section>
 
+    <!-- Issues grid -->
+    <section class="rail">
+      <h2 class="center">Issues</h2>
+      <div class="issues-grid">
+        <!-- Issue 1 -->
+        <a class="issue-card" href="/issues/1/">
+          <img src="issue1_cover.png" alt="Issue No. 1 cover: Spotlight Keepers" />
+          <div class="issue-meta">
+            <div class="issue-title">Issue No. 1 — Spotlight Keepers</div>
+            <p class="issue-tease">When cameras cut, decisions don’t. Consent agendas, emergency items, and the people who keep things moving.</p>
+            <span class="btn-ghost">Read more →</span>
+          </div>
+        </a>
+      </div>
+    </section>
+
     <section class="rail cta">
       <div class="cta-box">
         <h2 class="cta-heading">Power, documented.</h2>
@@ -121,9 +132,9 @@
 
   <footer class="site-footer">
     <div class="foot-left">
-      <a href="feed.xml">RSS</a> · <a href="#">Corrections</a> ·
+      <a href="feed.xml">RSS</a> · <a href="/corrections/">Corrections</a> ·
       <a href="mailto:editor@corridorledger.com">Editor</a> ·
-      <a href="mailto:tips@corridorledger.com">Tips</a>
+      <a href="/tips/">Tips</a>
     </div>
     <div class="foot-right">
       © 2025 Corridor Ledger
@@ -132,11 +143,11 @@
 
   <script>
     // Elements
-    const menuToggle = document.getElementById('menuToggle');
-    const dropdown   = document.getElementById('dropdown');
-    const backdrop   = document.getElementById('backdrop');
+    const menuToggle  = document.getElementById('menuToggle');
+    const dropdown    = document.getElementById('dropdown');
+    const backdrop    = document.getElementById('backdrop');
     const themeToggle = document.getElementById('themeToggle');
-    const root = document.documentElement;
+    const root        = document.documentElement;
 
     // Dropdown open/close
     function openDropdown(open) {
@@ -144,6 +155,7 @@
       backdrop.classList.toggle('show', open);
       menuToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
       dropdown.setAttribute('aria-hidden', open ? 'false' : 'true');
+      document.body.classList.toggle('no-scroll', open);
       if (open) {
         markActiveInDropdown();
         dropdown.querySelector('.search-input')?.focus();
@@ -156,7 +168,7 @@
 
     // Active link ONLY in dropdown
     function markActiveInDropdown() {
-      const path = location.pathname.replace(/\/+$/,'/') || '/';
+      const path = (location.pathname.replace(/\/+$/,'/') || '/');
       document.querySelectorAll('.dropdown-nav [data-route]').forEach(a => {
         const route = a.getAttribute('data-route');
         const active = (route === '/' && path === '/') || (route !== '/' && path.startsWith(route));
@@ -164,8 +176,7 @@
       });
     }
 
-    // Theme toggle (light/dark) with localStorage
-    // theme init + toggle
+    // Theme init + toggle (persist in localStorage)
     (function initTheme(){
       const saved = localStorage.getItem('cl-theme');
       if (saved === 'dark' || saved === 'light') {
@@ -174,7 +185,6 @@
         root.setAttribute('data-theme', 'dark');
       }
     })();
-
     themeToggle.addEventListener('click', () => {
       const next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
       root.setAttribute('data-theme', next);
