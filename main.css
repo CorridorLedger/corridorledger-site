@@ -1,127 +1,185 @@
 :root{
+  /* Light theme */
   --bg:#fafafa;
   --paper:#ffffff;
   --ink:#0a0a0a;
   --muted:#666;
   --border:#e7e7e7;
+  --accent:#1d4ed8;      /* link color (light) */
   --accent:#1d4ed8;
-  --tile-hover:#f3f4f6;
-  --btn-bg:#111;
-  --btn-fg:#fff;
+  --link: var(--accent);
 }
 
+/* Dark theme overrides — pure black to match the inverted wordmark */
 html[data-theme="dark"]{
-  --bg:#0b0b0c;
-  --paper:#0f0f10;
-  --ink:#ffffff;
-  --muted:#cfcfcf;
+  --bg:#000000;          /* page background */
+  --paper:#000000;       /* surfaces/header match wordmark bg */
+  --bg:#000000;
+  --paper:#000000;
+  --ink:#f5f5f5;
+  --muted:#aaaaaa;
   --border:#262626;
-  --accent:#8ab4ff;
-  --tile-hover:#1a1a1c;
-  --btn-bg:#ffffff;   /* Notify button becomes white */
-  --btn-fg:#000000;   /* text becomes black */
+  --accent:#9db4ff;      /* softer blue in dark */
+  --accent:#9db4ff;
+  --link: var(--accent);
 }
 
 *{box-sizing:border-box}
-html,body{margin:0;padding:0}
+
+/* Full-height layout for sticky footer */
+html, body { height:100%; }
 body{
-  font-family: ui-sans-serif,-apple-system,Segoe UI,Roboto,Helvetica,Arial;
+  margin:0; padding:0;
+  display:flex; flex-direction:column; min-height:100%;
+  font-family: ui-sans-serif, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
   background:var(--bg); color:var(--ink); line-height:1.6;
 }
+.no-scroll{overflow:hidden}
 
-/* Header */
-.site-header{position:sticky;top:0;z-index:50;background:var(--paper);border-bottom:1px solid var(--border)}
-.topbar{
-  max-width:1100px;margin:0 auto;padding:8px 12px; /* tighter */
-  display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:8px;
+/* HEADER */
+.site-header{
+  position:sticky; top:0; z-index:40;
+  background:var(--paper); border-bottom:1px solid var(--border)
 }
-.icon{display:block}
+
+/* brand row: fixed top-left menu, centered wordmark, top-right theme toggle */
+.brand{
+  position:relative;
+  max-width:1100px; margin:0 auto; padding:12px 16px;
+  display:flex; align-items:center; justify-content:center;
+}
+
+/* Buttons: remove thin outline/borders entirely */
 .icon-btn{
-  display:inline-grid; place-items:center;
-  width:36px;height:36px;border:0;background:transparent;border-radius:8px;color:var(--ink);cursor:pointer;
+  appearance:none;border:1px solid var(--border);background:var(--paper);
+  appearance:none;
+  border:0; outline:0;
+  background:transparent; /* just the icon */
+  color:var(--ink);
+  padding:8px 10px;border-radius:10px;font-size:18px;line-height:1;cursor:pointer;
+  padding:10px;           /* keep touch target */
+  border-radius:10px;     /* soft hit area but no visible stroke */
+  font-size:18px; line-height:1; cursor:pointer;
+  z-index:100;
 }
-.icon-btn:focus{outline:none}
-.icon-btn:focus-visible{box-shadow:0 0 0 2px rgba(0,0,0,.14)} /* keyboard only ring */
+.icon-btn:focus{ outline:0; }
+.icon-btn:focus-visible{ outline:0; }
 
-.logo-link{justify-self:center}
-.wordmark{display:block;max-width:560px;height:auto}
-@media (max-width: 480px){
-  .wordmark{max-width:340px}
-}
+/* Placement */
+.menu-btn{ position:fixed; left:8px; top:8px; }
+.theme-btn{ position:fixed; right:8px; top:8px; display:flex; align-items:center; gap:6px; }
 
-/* Show only one theme icon at a time (JS sets initial state too) */
-.icon-moon{display:none}
+/* theme icons; show sun in light, moon in dark */
+.theme-icon{ width:20px; height:20px; display:none; object-fit:contain }
+/* theme icons: show sun in light, moon in dark */
+.theme-icon{ width:22px; height:22px; display:none; object-fit:contain }
+html[data-theme="light"] .theme-icon-sun{ display:inline-block }
+html[data-theme="dark"]  .theme-icon-moon{ display:inline-block }
 
+/* Wordmark */
+.wordmark{display:block;height:auto;max-width:min(70vw, 520px); margin:0 auto}
+.wordmark-dark{ display:none }  /* default hidden */
+.wordmark-dark{ display:none }
+html[data-theme="dark"] .wordmark-light{ display:none }
+html[data-theme="dark"] .wordmark-dark{ display:block }
+
+/* Centered desktop nav (no active highlight here) */
 /* Desktop nav */
-.nav.desktop-nav{display:flex;justify-content:center;gap:18px;padding:8px 0}
-.nav.desktop-nav a{text-decoration:none;color:inherit;padding:4px 6px;border-radius:6px}
-.nav.desktop-nav a:hover{background:var(--tile-hover)}
-
-/* Panel below hamburger */
-.panel{
-  position:absolute;left:12px;top:56px; /* under header */
-  width:min(620px, calc(100% - 24px));
-  background:var(--paper);border:1px solid var(--border);border-radius:14px;
-  box-shadow:0 12px 30px rgba(0,0,0,.12);
-  transform:translateY(-8px);opacity:0;pointer-events:none;transition:transform .18s ease,opacity .18s ease;
-  z-index:60;
+.desktop-nav{
+  display:flex; gap:16px; justify-content:center;
+  max-width:1100px; margin:0 auto; padding:0 16px 12px;
 }
-.panel[hidden]{display:block}
-#panel:not([hidden]){transform:translateY(0);opacity:1;pointer-events:auto}
-.panel-inner{padding:12px}
+.desktop-nav a{color:var(--ink);text-decoration:none;padding:6px 8px;border-radius:8px}
 
-.panel-search{display:flex;align-items:center;margin:4px 0 10px}
-.search-input{width:100%;padding:.65rem .8rem;border:1px solid var(--border);border-radius:10px;background:var(--paper);color:var(--ink)}
-
-.panel-nav{display:grid;gap:8px}
-.panel-nav a{
-  display:block;text-decoration:none;color:inherit;padding:10px 12px;border-radius:10px;
-  transition: background .15s ease, transform .12s ease, font-weight .12s linear;
+/* Dropdown below the menu button */
+/* Dropdown */
+.dropdown-backdrop{
+  position:fixed; inset:0; background:rgba(0,0,0,0); z-index:49;
+  opacity:0; transition:opacity .2s ease; pointer-events:none;
 }
-@media (prefers-reduced-motion: no-preference){
-  .panel-nav a:hover{transform:translateY(-1px)}
-}
-.panel-nav a:hover{background:var(--tile-hover);font-weight:700}
-.panel-nav a.is-current{background:var(--tile-hover);font-weight:700}
+.dropdown-backdrop.show{ background:rgba(0,0,0,.25); opacity:1; pointer-events:auto; }
 
-/* Main layout */
-.container{max-width:1100px;margin:0 auto;padding:20px 16px}
+.dropdown{
+  position:fixed;
+  top:52px; left:8px;      /* sits under the button */
+  position:fixed; top:52px; left:8px;
+  width:min(92vw, 360px);
+  background:var(--paper); color:var(--ink);
+  border:1px solid var(--border); border-radius:12px;
+  box-shadow:0 12px 28px rgba(0,0,0,.14);
+  transform:translateY(-8px); opacity:0; pointer-events:none;
+  transition:transform .18s ease, opacity .18s ease;
+  z-index:50;
+}
+.dropdown.open{ transform:translateY(0); opacity:1; pointer-events:auto; }
+
+.dropdown-search{display:flex; gap:8px; padding:12px; border-bottom:1px solid var(--border)}
+.search-input{
+  flex:1; padding:.7rem .9rem; border:1px solid var(--border);
+  background:var(--paper); color:var(--ink);
+  border-radius:10px; font-size:1rem
+}
+
+.dropdown-nav{display:flex; flex-direction:column; padding:8px 12px; gap:8px}
+.dropdown-nav a{
+  display:block; text-decoration:none; color:var(--ink); padding:12px 10px;
+  border:1px solid var(--border); border-radius:10px; background:var(--paper)
+}
+.dropdown-nav a.active{border-color:var(--accent); color:var(--accent); font-weight:700}
+
+/* LAYOUT */
+.container{max-width:900px;margin:0 auto;padding:16px; flex:1}
 .rail{margin-top:18px}
-.center{text-align:center}
 
+/* hero centered */
 /* Hero */
-.hero{background:var(--paper);border:1px solid var(--border);border-radius:12px;padding:22px}
-.hero-center{text-align:center}
-.headline{margin:0 0 8px}
-.same-color{color:var(--ink)} /* force black/white depending on theme */
-.muted a{color:var(--accent)}
+.hero{
+  background:var(--paper); border:1px solid var(--border); border-radius:12px;
+  padding:28px; text-align:center
+}
+.headline{margin:0 0 6px}
+.dek{opacity:.9;margin:6px 0 10px}
+.muted{color:var(--muted)}
 
-/* Issues */
-.issues-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
-@media (max-width: 900px){ .issues-grid{grid-template-columns:1fr 1fr} }
-@media (max-width: 520px){ .issues-grid{grid-template-columns:1fr} }
-.issue-card{position:relative;display:block;background:var(--paper);border:1px solid var(--border);border-radius:12px;overflow:hidden;color:inherit;text-decoration:none}
-.issue-card img{display:block;width:100%;height:auto}
-.issue-meta{padding:12px}
-.issue-title{font-weight:700;margin-bottom:6px}
-.issue-tease{margin:0 0 8px;color:var(--ink)}
+/* Global link color handling */
+/* Links */
+a{ color: var(--link); }
+a:hover{ text-decoration: underline; }
 
 /* CTA */
-.cta .cta-box{background:var(--paper);border:1px solid var(--border);border-radius:12px;padding:18px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
-.cta input{padding:.6rem .8rem;border:1px solid var(--border);border-radius:8px;min-width:240px;background:var(--paper);color:var(--ink)}
-.btn-primary{
-  padding:.6rem 1rem;border-radius:8px;border:0;background:var(--btn-bg);color:var(--btn-fg);
-  font-weight:700;
+.cta .cta-box{
+  background:var(--paper); border:1px solid var(--border); border-radius:12px;
+  padding:18px; display:flex; align-items:center; justify-content:space-between;
+  gap:12px; flex-wrap:wrap
 }
+/* equal sizing for heading + subtext */
+.cta .cta-heading{font-size:1rem; margin:0}
+.cta .same-as-heading{font-size:1rem; margin:0}
+.cta input{
+  padding:.6rem .8rem;border:1px solid var(--border);border-radius:8px;min-width:220px;
+  background:var(--paper); color:var(--ink)
+}
+.cta button{padding:.6rem 1rem;border-radius:8px;border:0;background:var(--ink);color:var(--paper);font-weight:700}
 
-/* Footer */
+/* FOOTER pinned to bottom */
+/* FOOTER */
 .site-footer{
-  border-top:1px solid var(--border);background:var(--paper);
-  padding:18px 16px;margin-top:24px;color:var(--ink);
-  display:flex;justify-content:space-between;gap:12px
+  border-top:1px solid var(--border); background:var(--paper); padding:18px 16px;
+  color:var(--muted); display:flex; justify-content:space-between; gap:12px
 }
-.site-footer a{color:inherit;text-decoration:none}
-@media (max-width: 520px){ .site-footer{font-size:.9rem} }
+.site-footer a{color:var(--ink);text-decoration:none}
 
-/* Body lock when menu open */
-.no-scroll{overflow:hidden}
+/* RESPONSIVE */
+/* RESPONSIVE tweaks for a roomier mobile top bar */
+@media (max-width: 900px){
+  .desktop-nav{display:none}
+  .container{padding:14px}
+  .wordmark{max-width:78vw}
+  .wordmark{max-width:72vw} /* slightly smaller on mobile */
+}
+@media (max-width: 560px){
+  .wordmark{max-width:66vw} /* a touch smaller on very small screens */
+  .brand{padding:10px 12px}
+  .menu-btn{left:6px; top:6px}
+  .theme-btn{right:6px; top:6px}
+}
