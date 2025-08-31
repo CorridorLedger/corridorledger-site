@@ -8,21 +8,49 @@
   <link rel="icon" href="/favicon.ico" />
 </head>
 <body>
-  <!-- Header/nav/toggle (same as issue page) -->
-  <!-- (for brevity, copy the exact HEADER block from /issues/1/index.html) -->
+  <header class="site-header">
+    <div class="brand">
+      <button class="icon-btn menu-btn" id="menuToggle" aria-label="Open menu" aria-expanded="false" aria-controls="dropdown">☰</button>
+      <a href="/" class="logo-link" aria-label="Corridor Ledger home">
+        <img src="/wordmark_header_1200w.png" class="wordmark wordmark-light" alt="Corridor Ledger" />
+        <img src="/wordmark_header_dark_1200w.png" class="wordmark wordmark-dark" alt="Corridor Ledger" />
+      </a>
+      <button class="icon-btn theme-btn" id="themeToggle" aria-label="Toggle dark mode">
+        <img src="/sun_grunge_black_transparent.png" class="theme-icon theme-icon-sun" alt="" />
+        <img src="/moon_grunge_white_transparent.png" class="theme-icon theme-icon-moon" alt="" />
+      </button>
+    </div>
+    <div class="dropdown" id="dropdown" aria-hidden="true">
+      <form class="dropdown-search" onsubmit="return false" role="search">
+        <input class="search-input" type="search" placeholder="Search Corridor Ledger" />
+      </form>
+      <nav class="dropdown-nav">
+        <a href="/" data-route="/">Home</a>
+        <a href="/mechanisms/" data-route="/mechanisms/">Mechanisms</a>
+        <a href="/figures/" data-route="/figures/">Figures</a>
+        <a href="/numbers/" data-route="/numbers/">Numbers</a>
+        <a href="/dossiers/" data-route="/dossiers/">Dossiers</a>
+        <a href="/tips/" data-route="/tips/">Tips</a>
+      </nav>
+    </div>
+    <div class="dropdown-backdrop" id="backdrop" aria-hidden="true"></div>
+  </header>
 
   <main class="container">
     <section class="rail">
       <article class="hero hero-center">
         <h1 class="headline">Dossiers</h1>
+        <p class="dek">Living casefiles: documents, votes, and timelines tracked over time.</p>
       </article>
     </section>
 
     <section class="rail">
       <div class="issues-grid">
-        <!-- drop article tiles here as you publish -->
         <a class="issue-card article-card" href="#">
           <div class="issue-meta">
+            <div class="issue-title">Consent Agenda</div>
+            <p class="issue-tease">A recurring mechanism that compresses debate and expands scope.</p>
+            <span class="btn-ghost">Open dossier →</span>
           </div>
         </a>
       </div>
@@ -37,9 +65,45 @@
     <div class="foot-right">© 2025 Corridor Ledger</div>
   </footer>
 
-  <!-- copy the same JS as on the issue page -->
   <script>
-    /* copy the JS block from /issues/1/index.html */
+    const menuToggle=document.getElementById('menuToggle');
+    const dropdown=document.getElementById('dropdown');
+    const backdrop=document.getElementById('backdrop');
+    const themeToggle=document.getElementById('themeToggle');
+    const root=document.documentElement;
+
+    function openDropdown(open){
+      dropdown.classList.toggle('open',open);
+      backdrop.classList.toggle('show',open);
+      menuToggle.setAttribute('aria-expanded',open?'true':'false');
+      dropdown.setAttribute('aria-hidden',open?'false':'true');
+      document.body.classList.toggle('no-scroll',open);
+      if(open){ markActive(); dropdown.querySelector('.search-input')?.focus(); }
+    }
+    menuToggle.addEventListener('click',()=>openDropdown(!dropdown.classList.contains('open')));
+    backdrop.addEventListener('click',()=>openDropdown(false));
+    document.addEventListener('keydown',e=>{ if(e.key==='Escape') openDropdown(false); });
+    dropdown.addEventListener('click',e=>{ if(e.target.tagName==='A') openDropdown(false); });
+
+    function markActive(){
+      const path=(location.pathname.replace(/\/+$/,'/')||'/');
+      document.querySelectorAll('.dropdown-nav [data-route]').forEach(a=>{
+        const r=a.getAttribute('data-route');
+        a.classList.toggle('active', (r==='/'&&path==='/') || (r!=='/'&&path.startsWith(r)));
+      });
+    }
+
+    (function initTheme(){
+      const saved=localStorage.getItem('cl-theme');
+      if(saved==='dark'||saved==='light'){ root.setAttribute('data-theme',saved); }
+      else if(window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches){
+        root.setAttribute('data-theme','dark');
+      }
+    })();
+    themeToggle.addEventListener('click',()=>{
+      const next=root.getAttribute('data-theme')==='dark'?'light':'dark';
+      root.setAttribute('data-theme',next); localStorage.setItem('cl-theme',next);
+    });
   </script>
 </body>
 </html>
