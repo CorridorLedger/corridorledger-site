@@ -9,16 +9,16 @@
 
   <!-- Scoped tweaks for the comments UI -->
   <style>
-    /* Form tile: keep your hero style, but align contents left */
+    /* Form tile: keep hero styling, align contents left */
     .comments-hero.hero { text-align: left; }
 
-    /* Labels/fields: crisp, form-like, aligned to tile edge */
+    /* Labels/fields: crisp, left-aligned, roomy but not too wide */
     .comment-form {
       display: grid;
       gap: 12px;
-      margin-top: 10px;     /* close to the card’s inner edge */
+      margin-top: 10px;
       width: 100%;
-      max-width: 820px;     /* roomy but not too wide */
+      max-width: 820px;
     }
     .comment-form label {
       display: grid;
@@ -41,49 +41,53 @@
     }
     .comment-form textarea { resize: vertical; min-height: 132px; }
 
-    /* Focus: subtle but accessible */
+    /* Remove blue glow on fields (keep it subtle on focus) */
     .comment-form input:focus,
     .comment-form textarea:focus {
       outline: none;
-      border-color: var(--accent);
-      box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 18%, transparent);
+      border-color: var(--border);
+      box-shadow: none;
     }
 
-    /* Submit button: mimic nav tiles (gentle grow + bolder on hover) */
-    .btn-nav {
+    /* Submit button: same text size as nav; bold on hover; invert colors by theme */
+    .btn-submit {
       display: inline-block;
-      align-self: start;          /* left-align under fields */
+      align-self: start;
       padding: .65rem 1rem;
       border: 1px solid var(--border);
       border-radius: 10px;
       background: var(--paper);
       color: var(--ink);
       text-decoration: none;
+      font-size: 1rem;       /* matches desktop nav */
       font-weight: 600;
-      transition: transform .09s ease, background-color .15s ease, color .15s ease, border-color .15s ease, box-shadow .15s ease;
       cursor: pointer;
+      transition: background-color .12s ease, color .12s ease, border-color .12s ease, transform .06s ease;
     }
-    .btn-nav:hover {
-      transform: scale(1.015);
+    .btn-submit:hover {
       font-weight: 700;
-      border-color: var(--accent);
-      color: var(--ink);
-      box-shadow: 0 2px 10px rgba(0,0,0,.06);
+      transform: translateY(-1px);
+      /* invert colors via theme tokens */
+      background: var(--ink);
+      color: var(--paper);
+      border-color: var(--ink);
     }
-    .btn-nav:active { transform: scale(0.995); }
+    .btn-submit:focus { outline: none; box-shadow: none; }
+    .btn-submit:active { transform: translateY(0); }
 
-    /* Success note */
+    /* Success note centered */
     #comment-submitted {
       display: none;
-      margin-bottom: 10px;
+      margin: 0 0 10px;
       padding: .6rem .8rem;
       border: 1px solid var(--border);
       border-radius: 10px;
       background: var(--paper);
       color: var(--ink);
+      text-align: center;
     }
 
-    /* Rendered comments list: cleaner cards */
+    /* Rendered comments list: clean cards */
     #comments {
       list-style: none;
       padding: 0;
@@ -193,8 +197,8 @@
             <textarea required name="fields[message]" rows="6" placeholder="Add your comment…"></textarea>
           </label>
 
-          <button class="btn-nav" type="submit">Post comment</button>
-          <p class="muted" style="margin:.25rem 0 0">No login required. Basic spam checks apply.</p>
+          <button class="btn-submit" type="submit">Post comment</button>
+          <p class="muted" style="margin:.5rem 0 0; text-align:center">No login required. Basic spam checks apply.</p>
         </form>
 
         <!-- Rendered comments -->
