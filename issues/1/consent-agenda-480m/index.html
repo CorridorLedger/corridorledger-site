@@ -7,8 +7,13 @@
   <link rel="stylesheet" href="/main.css" />
   <link rel="icon" href="/favicon.ico" />
 
-  <!-- Scoped tweaks for the comments UI -->
+  <!-- Scoped tweaks for the comments UI + theme-switch patch -->
   <style>
+    /* Disable ALL transitions briefly while switching theme (prevents flicker/delay) */
+    html.theme-switching *, html.theme-switching *::before, html.theme-switching *::after {
+      transition: none !important;
+    }
+
     /* Form tile: keep hero styling, align contents left */
     .comments-hero.hero { text-align: left; }
 
@@ -59,15 +64,15 @@
       background: var(--paper);
       color: var(--ink);
       text-decoration: none;
-      font-size: 1rem;       /* matches desktop nav */
+      font-size: 1rem;       /* match desktop nav size */
       font-weight: 600;
       cursor: pointer;
+      /* keep hover smooth, but theme-switch patch above prevents the toggle lag */
       transition: background-color .12s ease, color .12s ease, border-color .12s ease, transform .06s ease;
     }
     .btn-submit:hover {
       font-weight: 700;
       transform: translateY(-1px);
-      /* invert colors via theme tokens */
       background: var(--ink);
       color: var(--paper);
       border-color: var(--ink);
@@ -244,6 +249,7 @@
       });
     }
 
+    // Theme init
     (function initTheme(){
       const saved=localStorage.getItem('cl-theme');
       if(saved==='dark'||saved==='light'){ root.setAttribute('data-theme',saved); }
@@ -251,9 +257,15 @@
         root.setAttribute('data-theme','dark');
       }
     })();
+
+    // Theme toggle with "no-transition" patch during switch
     themeToggle?.addEventListener('click',()=>{
+      root.classList.add('theme-switching');          // disable transitions
       const next=root.getAttribute('data-theme')==='dark'?'light':'dark';
-      root.setAttribute('data-theme',next); localStorage.setItem('cl-theme',next);
+      root.setAttribute('data-theme',next);
+      localStorage.setItem('cl-theme',next);
+      // re-enable transitions shortly after switch completes
+      setTimeout(()=>root.classList.remove('theme-switching'), 150);
     });
 
     // show success message after redirect anchor
