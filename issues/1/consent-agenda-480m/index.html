@@ -1,5 +1,220 @@
-<form action="https://cl-comments.3wh.workers.dev" method="POST" class="comment-form">
-  <input type="hidden" name="options[slug]" value="consent-agenda-480m">
-  <input type="hidden" name="options[redirect]" value="https://www.corridorledger.com/issues/1/consent-agenda-480m/#comment-submitted">
-  <!-- honeypot + name/email/url/message fields -->
-</form>
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>The Consent Agenda That Moved $480M · Corridor Ledger</title>
+  <link rel="stylesheet" href="/main.css" />
+  <link rel="icon" href="/favicon.ico" />
+</head>
+<body>
+  <!-- Header -->
+  <header class="site-header">
+    <div class="brand">
+      <button class="icon-btn menu-btn" id="menuToggle" aria-label="Open menu" aria-expanded="false" aria-controls="dropdown">☰</button>
+      <a href="/" class="logo-link" aria-label="Corridor Ledger home">
+        <img src="/wordmark_header_1200w.png" class="wordmark wordmark-light" alt="Corridor Ledger" />
+        <img src="/wordmark_header_dark_1200w.png" class="wordmark wordmark-dark" alt="Corridor Ledger" />
+      </a>
+      <button class="icon-btn theme-btn" id="themeToggle" aria-label="Toggle dark mode">
+        <img src="/sun_grunge_black_transparent.png" class="theme-icon theme-icon-sun" alt="" />
+        <img src="/moon_grunge_white_transparent.png" class="theme-icon theme-icon-moon" alt="" />
+      </button>
+    </div>
+
+    <nav class="nav desktop-nav" aria-label="Primary">
+      <a href="/">Home</a>
+      <a href="/mechanisms/">Mechanisms</a>
+      <a href="/figures/">Figures</a>
+      <a href="/numbers/">Numbers</a>
+      <a href="/dossiers/">Dossiers</a>
+      <a href="/tips/">Tips</a>
+    </nav>
+
+    <div class="dropdown" id="dropdown" aria-hidden="true">
+      <form class="dropdown-search" onsubmit="return false" role="search">
+        <input class="search-input" type="search" placeholder="Search Corridor Ledger" />
+      </form>
+      <nav class="dropdown-nav">
+        <a href="/" data-route="/">Home</a>
+        <a href="/mechanisms/" data-route="/mechanisms/">Mechanisms</a>
+        <a href="/figures/" data-route="/figures/">Figures</a>
+        <a href="/numbers/" data-route="/numbers/">Numbers</a>
+        <a href="/dossiers/" data-route="/dossiers/">Dossiers</a>
+        <a href="/tips/" data-route="/tips/">Tips</a>
+      </nav>
+    </div>
+    <div class="dropdown-backdrop" id="backdrop" aria-hidden="true"></div>
+  </header>
+
+  <main class="container">
+    <section class="rail">
+      <article class="hero hero-center">
+        <h1 class="headline">The Consent Agenda That Moved $480M</h1>
+        <p class="dek">A one-page renewal inside a 214-page packet—and the vote that followed.</p>
+      </article>
+    </section>
+
+    <!-- Article body placeholder -->
+    <section class="rail">
+      <article class="hero">
+        <p class="muted">[Your story goes here.]</p>
+      </article>
+    </section>
+
+    <!-- Comments -->
+    <section class="rail">
+      <article class="hero">
+        <h2 style="margin-top:0">Comments</h2>
+
+        <!-- Submission success anchor -->
+        <div id="comment-submitted" class="muted" style="display:none;margin-bottom:8px">
+          Thanks — your comment was submitted.
+          If moderation is enabled, it will appear after review.
+        </div>
+
+        <!-- Comment form (posts to your Worker) -->
+        <form
+          action="https://cl-comments.3wh.workers.dev"
+          method="POST"
+          class="comment-form"
+          style="display:grid;gap:10px;margin-top:10px">
+
+          <input type="hidden" name="options[slug]" value="consent-agenda-480m">
+          <input type="hidden" name="options[redirect]" value="https://www.corridorledger.com/issues/1/consent-agenda-480m/#comment-submitted">
+
+          <!-- Honeypot (keep empty) -->
+          <div style="position:absolute;left:-5000px" aria-hidden="true">
+            <label>Leave this field empty
+              <input type="text" name="fields[website]" tabindex="-1" autocomplete="off">
+            </label>
+          </div>
+
+          <label>Name
+            <input required name="fields[name]" type="text" placeholder="Your name">
+          </label>
+
+          <label>Website (optional)
+            <input name="fields[url]" type="url" placeholder="https://">
+          </label>
+
+          <label>Comment
+            <textarea required name="fields[message]" rows="5" placeholder="Add your comment…"></textarea>
+          </label>
+
+          <button type="submit">Post comment</button>
+          <p class="muted" style="margin:.25rem 0 0">No login required. Basic spam checks apply.</p>
+        </form>
+
+        <!-- Rendered comments -->
+        <ul id="comments" style="list-style:none;padding:0;margin:18px 0 0;display:grid;gap:12px"></ul>
+      </article>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="foot-left">
+      <a href="/feed.xml">RSS</a> · <a href="/corrections/">Corrections</a> ·
+      <a href="mailto:editor@corridorledger.com">Editor</a> · <a href="/tips/">Tips</a>
+    </div>
+    <div class="foot-right">© 2025 Corridor Ledger</div>
+  </footer>
+
+  <script>
+    // ----- shared UI (menu + theme) -----
+    const menuToggle=document.getElementById('menuToggle');
+    const dropdown=document.getElementById('dropdown');
+    const backdrop=document.getElementById('backdrop');
+    const themeToggle=document.getElementById('themeToggle');
+    const root=document.documentElement;
+
+    function openDropdown(open){
+      dropdown.classList.toggle('open',open);
+      backdrop.classList.toggle('show',open);
+      menuToggle.setAttribute('aria-expanded',open?'true':'false');
+      dropdown.setAttribute('aria-hidden',open?'false':'true');
+      document.body.classList.toggle('no-scroll',open);
+      if(open){ markActive(); dropdown.querySelector('.search-input')?.focus(); }
+    }
+    menuToggle?.addEventListener('click',()=>openDropdown(!dropdown.classList.contains('open')));
+    backdrop?.addEventListener('click',()=>openDropdown(false));
+    document.addEventListener('keydown',e=>{ if(e.key==='Escape') openDropdown(false); });
+    dropdown?.addEventListener('click',e=>{ if(e.target.tagName==='A') openDropdown(false); });
+
+    function markActive(){
+      const path=(location.pathname.replace(/\/+$/,'/')||'/');
+      document.querySelectorAll('.dropdown-nav [data-route]').forEach(a=>{
+        const r=a.getAttribute('data-route');
+        a.classList.toggle('active', (r==='/'&&path==='/') || (r!=='/'&&path.startsWith(r)));
+      });
+    }
+
+    (function initTheme(){
+      const saved=localStorage.getItem('cl-theme');
+      if(saved==='dark'||saved==='light'){ root.setAttribute('data-theme',saved); }
+      else if(window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches){
+        root.setAttribute('data-theme','dark');
+      }
+    })();
+    themeToggle?.addEventListener('click',()=>{
+      const next=root.getAttribute('data-theme')==='dark'?'light':'dark';
+      root.setAttribute('data-theme',next); localStorage.setItem('cl-theme',next);
+    });
+
+    // Show success note if we landed on the redirect anchor
+    if (location.hash === '#comment-submitted') {
+      const el = document.getElementById('comment-submitted');
+      if (el) el.style.display = 'block';
+    }
+
+    // ----- Comments loader (reads merged JSON files from the repo) -----
+    (async function loadComments(){
+      const OWNER='CorridorLedger';
+      const REPO='corridorledger-site';
+      const SLUG='consent-agenda-480m';
+      const BRANCH='main'; // your repo default
+
+      const listUrl=`https://api.github.com/repos/${OWNER}/${REPO}/contents/comments/${SLUG}?ref=${BRANCH}`;
+      const out=document.getElementById('comments');
+      if(!out) return;
+
+      try{
+        const res=await fetch(listUrl, { headers:{ 'Accept':'application/vnd.github+json' }});
+        if(!res.ok){
+          // 404 = no comments yet; just bail silently
+          return;
+        }
+        const items=await res.json(); // array of files
+        // sort newest first by filename (they are epoch timestamps)
+        items.sort((a,b)=>b.name.localeCompare(a.name));
+
+        for(const file of items){
+          if(file.type!=='file') continue;
+          const jr=await fetch(file.download_url);
+          const j=await jr.json();
+
+          const li=document.createElement('li');
+          li.style.border='1px solid var(--border)';
+          li.style.borderRadius='10px';
+          li.style.padding='12px';
+          li.innerHTML=`
+            <div style="font-weight:700">${escapeHtml(j.name || 'Reader')}</div>
+            <div class="muted" style="font-size:.85rem">${formatWhen(j.date)}</div>
+            <div style="margin-top:6px; white-space:pre-wrap">${escapeHtml(j.message || '')}</div>
+          `;
+          out.appendChild(li);
+        }
+      }catch(e){
+        // fail silent on API rate limit or JSON error
+        console.warn('comments load failed', e);
+      }
+
+      function escapeHtml(s){ return (s||'').replace(/[&<>"']/g, c=>({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c])); }
+      function formatWhen(iso){
+        if(!iso) return '';
+        try{ const d=new Date(iso); return d.toLocaleString(); }catch{ return ''; }
+      }
+    })();
+  </script>
+</body>
+</html>
