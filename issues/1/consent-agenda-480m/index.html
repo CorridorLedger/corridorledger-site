@@ -7,17 +7,16 @@
   <link rel="stylesheet" href="/main.css" />
   <link rel="icon" href="/favicon.ico" />
 
-  <!-- Scoped tweaks for the comments UI + theme-switch patch -->
   <style>
-    /* Disable ALL transitions briefly while switching theme (prevents flicker/delay) */
+    /* During theme flip, nuke transitions to avoid any flicker anywhere */
     html.theme-switching *, html.theme-switching *::before, html.theme-switching *::after {
       transition: none !important;
     }
 
-    /* Form tile: keep hero styling, align contents left */
+    /* Comments tile aligned left */
     .comments-hero.hero { text-align: left; }
 
-    /* Labels/fields: crisp, left-aligned, roomy but not too wide */
+    /* Form layout */
     .comment-form {
       display: grid;
       gap: 12px;
@@ -46,7 +45,7 @@
     }
     .comment-form textarea { resize: vertical; min-height: 132px; }
 
-    /* Remove blue glow on fields (keep it subtle on focus) */
+    /* No blue glow on focus */
     .comment-form input:focus,
     .comment-form textarea:focus {
       outline: none;
@@ -54,7 +53,7 @@
       box-shadow: none;
     }
 
-    /* Submit button: same text size as nav; bold on hover; invert colors by theme */
+    /* Submit button: no color transitions (prevents theme flicker) */
     .btn-submit {
       display: inline-block;
       align-self: start;
@@ -64,11 +63,10 @@
       background: var(--paper);
       color: var(--ink);
       text-decoration: none;
-      font-size: 1rem;       /* match desktop nav size */
+      font-size: 1rem;   /* match desktop nav size */
       font-weight: 600;
       cursor: pointer;
-      /* keep hover smooth, but theme-switch patch above prevents the toggle lag */
-      transition: background-color .12s ease, color .12s ease, border-color .12s ease, transform .06s ease;
+      transition: transform .06s ease;   /* only the tiny “grow” animates */
     }
     .btn-submit:hover {
       font-weight: 700;
@@ -92,7 +90,7 @@
       text-align: center;
     }
 
-    /* Rendered comments list: clean cards */
+    /* Rendered comments list */
     #comments {
       list-style: none;
       padding: 0;
@@ -221,7 +219,7 @@
   </footer>
 
   <script>
-    // ----- shared UI (menu + theme) -----
+    // ----- menu + theme -----
     const menuToggle=document.getElementById('menuToggle');
     const dropdown=document.getElementById('dropdown');
     const backdrop=document.getElementById('backdrop');
@@ -258,28 +256,27 @@
       }
     })();
 
-    // Theme toggle with "no-transition" patch during switch
+    // Theme toggle: disable transitions during flip to prevent any button lag
     themeToggle?.addEventListener('click',()=>{
-      root.classList.add('theme-switching');          // disable transitions
+      root.classList.add('theme-switching');
       const next=root.getAttribute('data-theme')==='dark'?'light':'dark';
       root.setAttribute('data-theme',next);
       localStorage.setItem('cl-theme',next);
-      // re-enable transitions shortly after switch completes
-      setTimeout(()=>root.classList.remove('theme-switching'), 150);
+      setTimeout(()=>root.classList.remove('theme-switching'), 120);
     });
 
-    // show success message after redirect anchor
+    // Show success after redirect
     if (location.hash === '#comment-submitted') {
       const el = document.getElementById('comment-submitted');
       if (el) el.style.display = 'block';
     }
 
-    // ----- Comments loader (reads merged JSON files) -----
+    // ----- Load comments (reads merged JSON files) -----
     (async function loadComments(){
       const OWNER='CorridorLedger';
       const REPO='corridorledger-site';
       const SLUG='consent-agenda-480m';
-      const BRANCH='main'; // default branch
+      const BRANCH='main';
 
       const listUrl=`https://api.github.com/repos/${OWNER}/${REPO}/contents/comments/${SLUG}?ref=${BRANCH}`;
       const out=document.getElementById('comments');
@@ -287,7 +284,7 @@
 
       try{
         const res=await fetch(listUrl, { headers:{ 'Accept':'application/vnd.github+json' }});
-        if(!res.ok){ return; } // no comments yet
+        if(!res.ok){ return; } // none yet
         const items=await res.json();
         items.sort((a,b)=>b.name.localeCompare(a.name)); // newest first
 
