@@ -4,6 +4,10 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Tips · Corridor Ledger</title>
+
+  <!-- Do NOT let Google/Bing index this; site search will still find it -->
+  <meta name="robots" content="noindex, nofollow" />
+
   <link rel="stylesheet" href="/main.css" />
   <link rel="icon" href="/favicon.ico" />
   <meta name="description" content="Send Corridor Ledger documents and leads." />
@@ -22,9 +26,10 @@
       </button>
     </div>
 
+    <!-- Dropdown (no Tips link here either) -->
     <div class="dropdown" id="dropdown" aria-hidden="true">
-      <form class="dropdown-search" role="search" aria-label="Site search" action="/search/" method="GET">
-        <input class="search-input" type="search" name="q" placeholder="Search Corridor Ledger" />
+      <form class="dropdown-search" onsubmit="return false" role="search">
+        <input class="search-input" type="search" placeholder="Search Corridor Ledger" />
       </form>
       <nav class="dropdown-nav">
         <a href="/" data-route="/">Home</a>
@@ -37,13 +42,38 @@
     <div class="dropdown-backdrop" id="backdrop" aria-hidden="true"></div>
   </header>
 
-  <main class="container" data-pagefind-body data-section="Tips">
+  <!-- data-pagefind-body ensures Pagefind indexes this page for on-site search -->
+  <main class="container" data-pagefind-body>
     <section class="rail">
-      <article class="hero" style="max-width:720px;margin:0 auto;text-align:center">
+      <article class="hero hero-center" style="max-width:780px;margin:0 auto;">
         <h1 class="headline">Tips</h1>
-        <p class="dek">We’re adding a secure form. Until then, send documents or notes:</p>
-        <p class="muted">Email: <a href="mailto:tips@corridorledger.com">tips@corridorledger.com</a></p>
-        <p class="muted">For sensitive material, remove metadata when possible and avoid work devices/networks.</p>
+        <p class="dek">We’re adding a secure form. Until then, you can contact us directly.</p>
+
+        <!-- Hidden synonyms to make on-site search find this page for many queries -->
+        <p class="visually-hidden">
+          tip, tips, leak, whistleblower, contact the newsroom, confidential, secure contact, share documents, submit documents
+        </p>
+
+        <!-- Click to reveal email (assembled via JS to avoid basic scraping) -->
+        <div class="tip-card">
+          <h2 class="tip-subhead">Email (preferred for now)</h2>
+          <p class="muted">Use a personal device/network if possible. Remove metadata from sensitive files.</p>
+
+          <button class="reveal-btn" id="revealEmail" type="button" aria-controls="emailBox" aria-expanded="false">
+            Reveal address
+          </button>
+
+          <div id="emailBox" class="email-box" hidden>
+            <a id="tipMailto" class="btn-solid" href="#" rel="nofollow">tips@corridorledger.com</a>
+            <button id="copyEmail" class="btn-ghost" type="button">Copy</button>
+          </div>
+        </div>
+
+        <!-- Optional: form placeholder (disabled until you want to turn it on) -->
+        <div class="tip-card">
+          <h2 class="tip-subhead">Secure web form (coming soon)</h2>
+          <p class="muted">We’ll provide an in-browser form with basic anti-spam checks and file support.</p>
+        </div>
       </article>
     </section>
   </main>
@@ -51,12 +81,13 @@
   <footer class="site-footer">
     <div class="foot-left">
       <a href="/feed.xml">RSS</a> · <a href="/corrections/">Corrections</a> ·
-      <a href="mailto:editor@corridorledger.com">Editor</a> · <a href="/tips/">Tips</a>
+      <a href="mailto:editor@corridorledger.com">Editor</a>
     </div>
     <div class="foot-right">© 2025 Corridor Ledger</div>
   </footer>
 
   <script>
+    // Menu + theme (same pattern as your other pages)
     const menuToggle=document.getElementById('menuToggle');
     const dropdown=document.getElementById('dropdown');
     const backdrop=document.getElementById('backdrop');
@@ -69,20 +100,11 @@
       menuToggle.setAttribute('aria-expanded',open?'true':'false');
       dropdown.setAttribute('aria-hidden',open?'false':'true');
       document.body.classList.toggle('no-scroll',open);
-      if(open){ markActive(); dropdown.querySelector('.search-input')?.focus(); }
+      if(open){ dropdown.querySelector('.search-input')?.focus(); }
     }
     menuToggle.addEventListener('click',()=>openDropdown(!dropdown.classList.contains('open')));
     backdrop.addEventListener('click',()=>openDropdown(false));
     document.addEventListener('keydown',e=>{ if(e.key==='Escape') openDropdown(false); });
-    dropdown.addEventListener('click',e=>{ if(e.target.tagName==='A') openDropdown(false); });
-
-    function markActive(){
-      const path=(location.pathname.replace(/\/+$/,'/')||'/');
-      document.querySelectorAll('.dropdown-nav [data-route]').forEach(a=>{
-        const r=a.getAttribute('data-route');
-        a.classList.toggle('active', (r==='/'&&path==='/') || (r!=='/'&&path.startsWith(r)));
-      });
-    }
 
     (function initTheme(){
       const saved=localStorage.getItem('cl-theme');
@@ -94,6 +116,32 @@
     themeToggle.addEventListener('click',()=>{
       const next=root.getAttribute('data-theme')==='dark'?'light':'dark';
       root.setAttribute('data-theme',next); localStorage.setItem('cl-theme',next);
+    });
+
+    // Email reveal & copy
+    const revealBtn = document.getElementById('revealEmail');
+    const emailBox  = document.getElementById('emailBox');
+    const tipMailto = document.getElementById('tipMailto');
+    const copyBtn   = document.getElementById('copyEmail');
+
+    // Obfuscate the address until click
+    const user   = 'tips';
+    const domain = 'corridorledger.com';
+
+    revealBtn.addEventListener('click', () => {
+      tipMailto.textContent = `${user}@${domain}`;
+      tipMailto.href = `mailto:${user}@${domain}?subject=Tip`;
+      emailBox.hidden = false;
+      revealBtn.setAttribute('aria-expanded','true');
+      revealBtn.hidden = true;
+    });
+
+    copyBtn.addEventListener('click', async () => {
+      try {
+        await navigator.clipboard.writeText(`${user}@${domain}`);
+        copyBtn.textContent = 'Copied';
+        setTimeout(()=>copyBtn.textContent='Copy', 1400);
+      } catch {}
     });
   </script>
 </body>
