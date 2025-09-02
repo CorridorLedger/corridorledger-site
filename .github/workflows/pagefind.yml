@@ -11,7 +11,7 @@ on:
       - ".github/workflows/pagefind.yml"
   workflow_dispatch:
 
-# We’ll push with a PAT, so GITHUB_TOKEN can stay read-only
+# We push with PAT; GITHUB_TOKEN can stay read-only
 permissions:
   contents: read
 
@@ -25,7 +25,7 @@ jobs:
           fetch-depth: 0
           persist-credentials: false
 
-      - name: Setup Node
+      - name: Node 20
         uses: actions/setup-node@v4
         with:
           node-version: 20
@@ -33,26 +33,54 @@ jobs:
       - name: Install Pagefind
         run: npm i pagefind@latest
 
-      - name: Build Pagefind index
-        run: npx pagefind --site . --output-path ./pagefind
+      - name: Show Pagefind version
+        run: npx pagefind --version || true
 
-      - name: Verify index exists
+      - name: Build Pagefind index (verbose)
+        run: npx pagefind --site . --output-path ./pagefind --verbose
+
+      - name: Copy Pagefind UI assets into /pagefind
+        shell: bash
         run: |
-          test -f ./pagefind/manifest.json
-          ls -la ./pagefind | head -50
+          mkdir -p ./pagefind
+          # Try both possible locations (package layouts have changed over time)
+          for p in \
+            node_modules/pagefind/pagefind-ui.css \
+            node_modules/pagefind/pagefind-ui.js \
+            node_modules/pagefind/default-ui/pagefind-ui.css \
+            node_modules/pagefind/default-ui/pagefind-ui.js
+          do
+            if [ -f "$p" ]; then
+              cp -v "$p" ./pagefind/
+            fi
+          done
+          ls -la ./pagefind
 
-      - name: Commit & push /pagefind with PAT
+      - name: Verify manifest exists
+        run: test -f ./pagefind/manifest.json && echo "Manifest OK"
+
+      - name: Ensure /pagefind is committed (PAT)
+        if: always()
         env:
           PUSH_TOKEN: ${{ secrets.PAGEFIND_PUSH_TOKEN }}
           REPO: CorridorLedger/corridorledger-site
           BRANCH: ${{ github.ref_name }}
         run: |
-          if [ -n "$(git status --porcelain pagefind)" ]; then
-            git config user.name  "corridor-actions-bot"
-            git config user.email "actions@users.noreply.github.com"
-            git add pagefind
+          # Unignore /pagefind just in case
+          if [ -f .gitignore ]; then
+            if ! grep -q "^!pagefind/" .gitignore; then
+              echo "!pagefind/**" >> .gitignore
+              git add .gitignore
+            fi
+          fi
+
+          git config user.name  "corridor-actions-bot"
+          git config user.email "actions@users.noreply.github.com"
+
+          git add pagefind || true
+          if ! git diff --cached --quiet; then
             git commit -m "Build Pagefind index"
             git push "https://x-access-token:${PUSH_TOKEN}@github.com/${REPO}.git" "HEAD:${BRANCH}"
           else
-            echo "No changes in /pagefind"
+            echo "No changes to commit."
           fi
