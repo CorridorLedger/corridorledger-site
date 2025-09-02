@@ -75,8 +75,10 @@
 
     <!-- Dropdown under the menu button (opens beneath) -->
     <div class="dropdown" id="dropdown" aria-hidden="true">
-      <form class="dropdown-search" onsubmit="return false" role="search" aria-label="Site search">
-        <input class="search-input" type="search" placeholder="Search Corridor Ledger" />
+      <form class="dropdown-search" role="search" aria-label="Site search"
+            action="/search/" method="GET">
+        <input class="search-input" type="search" name="q"
+               placeholder="Search Corridor Ledger" />
       </form>
       <nav class="dropdown-nav" aria-label="Mobile primary">
         <a href="/" data-route="/">Home</a>
