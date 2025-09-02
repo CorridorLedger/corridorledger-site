@@ -1,0 +1,27 @@
+name: Build Pagefind Index
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # Build the search index into /pagefind
+      - name: Build Pagefind index
+        run: npx pagefind --site . --output-path pagefind
+
+      # Commit the /pagefind folder back to the repo (served by GitHub Pages/Cloudflare)
+      - name: Commit pagefind output
+        run: |
+          git config user.name "github-actions"
+          git config user.email "actions@users.noreply.github.com"
+          git add pagefind
+          git commit -m "Update Pagefind index" || echo "No changes to commit"
+          git push
