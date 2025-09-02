@@ -1,2 +1,3 @@
 User-agent: *
 Disallow: /tips/
+Sitemap: https://www.corridorledger.com/sitemap.xml
