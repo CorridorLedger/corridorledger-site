@@ -270,3 +270,68 @@ a:hover{ text-decoration: underline; }
   transition: background .15s ease, font-weight .12s ease;
 }
 .btn-ghost:hover{ font-weight:700; background:var(--tile-hover); }
+
+/* --- Tips page styles --- */
+.tip-card{
+  background:var(--paper);
+  border:1px solid var(--border);
+  border-radius:12px;
+  padding:16px;
+  margin:12px auto;
+  text-align:left;
+  max-width:640px;
+}
+.tip-subhead{ margin:0 0 6px; font-weight:700; }
+
+.reveal-btn.linklike,
+.reveal-btn{
+  background:transparent;
+  border:0;
+  color:var(--link);
+  cursor:pointer;
+  padding:0;
+  font:inherit;
+}
+.reveal-btn:hover,
+.linklike:hover{ text-decoration:underline; }
+
+.email-box{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  margin-top:10px;
+}
+
+/* Buttons that match your site buttons */
+.btn-solid{
+  padding:.55rem .9rem;
+  border-radius:8px;
+  border:0;
+  background:var(--ink);
+  color:var(--paper);
+  font-weight:700;
+  text-decoration:none;
+  display:inline-block;
+}
+.btn-solid:hover{ opacity:.9; }
+
+.btn-ghost{
+  padding:.5rem .8rem;
+  border-radius:8px;
+  border:1px solid var(--border);
+  background:transparent;
+  color:var(--ink);
+  font-weight:700;
+  cursor:pointer;
+}
+.btn-ghost:hover{
+  background:var(--tile-hover);
+}
+
+/* Hidden helper text for search keywords */
+.visually-hidden{
+  position:absolute!important;
+  height:1px; width:1px;
+  overflow:hidden; clip:rect(1px,1px,1px,1px);
+  white-space:nowrap; clip-path:inset(50%);
+}
