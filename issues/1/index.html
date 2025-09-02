@@ -31,8 +31,8 @@
     </nav>
 
     <div class="dropdown" id="dropdown" aria-hidden="true">
-      <form class="dropdown-search" onsubmit="return false" role="search">
-        <input class="search-input" type="search" placeholder="Search Corridor Ledger" />
+      <form class="dropdown-search" role="search" aria-label="Site search" action="/search/" method="GET">
+        <input class="search-input" type="search" name="q" placeholder="Search Corridor Ledger" />
       </form>
       <nav class="dropdown-nav">
         <a href="/" data-route="/">Home</a>
@@ -46,7 +46,7 @@
     <div class="dropdown-backdrop" id="backdrop" aria-hidden="true"></div>
   </header>
 
-  <main class="container">
+  <main class="container" data-pagefind-body data-section="Issues" data-issue="1">
     <section class="rail">
       <article class="hero hero-center">
         <img src="/issue1_cover.png" alt="Issue cover: Spotlight Keepers" style="max-width:260px;border-radius:10px;border:1px solid var(--border)" />
@@ -57,16 +57,16 @@
 
     <section class="rail">
       <div class="issues-grid">
-        <!-- Feature article (stub until you add its page) -->
+        <!-- Feature article (stub until its page exists) -->
         <a class="issue-card article-card" href="#">
           <div class="issue-meta">
             <div class="issue-title">Spotlight Keepers</div>
-            <p class="issue-tease">Who holds the mic when attention moves on? A look at the quorum makers and agenda shapers.</p>
+            <p class="issue-tease">Who ensures momentum when attention moves on? The quorum makers and agenda shapers.</p>
             <span class="btn-ghost">Read more →</span>
           </div>
         </a>
 
-        <!-- Consent Agenda article → link fixed -->
+        <!-- Consent Agenda article → working link -->
         <a class="issue-card article-card" href="/issues/1/consent-agenda-480m/">
           <div class="issue-meta">
             <div class="issue-title">The Consent Agenda That Moved $480M</div>
