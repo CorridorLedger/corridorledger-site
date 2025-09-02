@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Tips · Corridor Ledger</title>
 
-  <!-- Do NOT let Google/Bing index this; site search will still find it -->
+  <!-- Keep this out of Google/Bing; site search will still find it -->
   <meta name="robots" content="noindex, nofollow" />
 
   <link rel="stylesheet" href="/main.css" />
@@ -26,10 +26,10 @@
       </button>
     </div>
 
-    <!-- Dropdown (no Tips link here either) -->
+    <!-- Dropdown (no Tips link here) -->
     <div class="dropdown" id="dropdown" aria-hidden="true">
-      <form class="dropdown-search" onsubmit="return false" role="search">
-        <input class="search-input" type="search" placeholder="Search Corridor Ledger" />
+      <form class="dropdown-search" role="search" action="/search/" method="GET">
+        <input class="search-input" type="search" name="q" placeholder="Search Corridor Ledger" />
       </form>
       <nav class="dropdown-nav">
         <a href="/" data-route="/">Home</a>
@@ -42,7 +42,7 @@
     <div class="dropdown-backdrop" id="backdrop" aria-hidden="true"></div>
   </header>
 
-  <!-- data-pagefind-body ensures Pagefind indexes this page for on-site search -->
+  <!-- data-pagefind-body ensures Pagefind will index this page for on-site search -->
   <main class="container" data-pagefind-body>
     <section class="rail">
       <article class="hero hero-center" style="max-width:780px;margin:0 auto;">
@@ -54,11 +54,12 @@
           tip, tips, leak, whistleblower, contact the newsroom, confidential, secure contact, share documents, submit documents
         </p>
 
-        <!-- Click to reveal email (assembled via JS to avoid basic scraping) -->
+        <!-- Email card -->
         <div class="tip-card">
           <h2 class="tip-subhead">Email (preferred for now)</h2>
           <p class="muted">Use a personal device/network if possible. Remove metadata from sensitive files.</p>
 
+          <!-- Click to reveal address; keeps plain email out of source for basic bots -->
           <button class="reveal-btn" id="revealEmail" type="button" aria-controls="emailBox" aria-expanded="false">
             Reveal address
           </button>
@@ -67,9 +68,14 @@
             <a id="tipMailto" class="btn-solid" href="#" rel="nofollow">tips@corridorledger.com</a>
             <button id="copyEmail" class="btn-ghost" type="button">Copy</button>
           </div>
+
+          <!-- Fallback for no-JS readers -->
+          <noscript>
+            <p class="muted">tips [at] corridorledger [dot] com</p>
+          </noscript>
         </div>
 
-        <!-- Optional: form placeholder (disabled until you want to turn it on) -->
+        <!-- Form placeholder (disabled for now) -->
         <div class="tip-card">
           <h2 class="tip-subhead">Secure web form (coming soon)</h2>
           <p class="muted">We’ll provide an in-browser form with basic anti-spam checks and file support.</p>
@@ -87,7 +93,7 @@
   </footer>
 
   <script>
-    // Menu + theme (same pattern as your other pages)
+    // Menu + theme (same as elsewhere)
     const menuToggle=document.getElementById('menuToggle');
     const dropdown=document.getElementById('dropdown');
     const backdrop=document.getElementById('backdrop');
@@ -124,13 +130,14 @@
     const tipMailto = document.getElementById('tipMailto');
     const copyBtn   = document.getElementById('copyEmail');
 
-    // Obfuscate the address until click
+    // Obfuscate until click
     const user   = 'tips';
     const domain = 'corridorledger.com';
 
     revealBtn.addEventListener('click', () => {
-      tipMailto.textContent = `${user}@${domain}`;
-      tipMailto.href = `mailto:${user}@${domain}?subject=Tip`;
+      const addr = `${user}@${domain}`;
+      tipMailto.textContent = addr;
+      tipMailto.href = `mailto:${addr}?subject=Tip`;
       emailBox.hidden = false;
       revealBtn.setAttribute('aria-expanded','true');
       revealBtn.hidden = true;
