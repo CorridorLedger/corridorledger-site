@@ -8,12 +8,12 @@
   <!-- Site styles -->
   <link rel="stylesheet" href="/main.css"/>
 
-  <!-- Pagefind UI assets (built by your Action into /pagefind) -->
+  <!-- Pagefind UI assets (must be present at /pagefind/*) -->
   <link rel="stylesheet" href="/pagefind/pagefind-ui.css">
   <script defer src="/pagefind/pagefind-ui.js"></script>
 
   <style>
-    /* Make Pagefind UI match your theme */
+    /* Theme match for Pagefind UI */
     .pagefind-ui__form,
     .pagefind-ui__search-input,
     .pagefind-ui__results-area,
@@ -23,19 +23,16 @@
     .pagefind-ui__search-clear { background: transparent; color: var(--link); }
     html[data-theme="dark"] .pagefind-ui__search-input { border-color:#333; }
 
-    /* Small notice if the index is missing */
+    /* Friendly hint only if the index truly isn't available */
     .pf-problem {
       margin-top: 12px; padding: 10px 12px;
       border: 1px dashed var(--border); border-radius: 10px;
       color: var(--muted);
+      display: none; /* hidden by default */
     }
   </style>
-
-  <!-- Preload the manifest to fail fast if index is missing -->
-  <link rel="preload" as="fetch" href="/pagefind/manifest.json" crossorigin>
 </head>
 <body>
-  <!-- Header (same pattern as your other pages) -->
   <header class="site-header">
     <div class="brand">
       <button class="icon-btn menu-btn" id="menuToggle" aria-label="Open menu" aria-expanded="false" aria-controls="dropdown">☰</button>
@@ -49,7 +46,6 @@
       </button>
     </div>
 
-    <!-- Desktop nav (optional here) -->
     <nav class="nav desktop-nav" aria-label="Primary">
       <a href="/">Home</a>
       <a href="/mechanisms/">Mechanisms</a>
@@ -59,7 +55,6 @@
       <a href="/tips/">Tips</a>
     </nav>
 
-    <!-- Dropdown -->
     <div class="dropdown" id="dropdown" aria-hidden="true">
       <form class="dropdown-search" role="search" aria-label="Site search" action="/search/" method="GET">
         <input class="search-input" type="search" name="q" placeholder="Search Corridor Ledger" />
@@ -84,7 +79,9 @@
 
         <!-- Pagefind UI mounts here -->
         <div id="search"></div>
-        <div id="pfNotice" class="pf-problem" style="display:none">
+
+        <!-- Only shown if the index truly can't be reached after retries -->
+        <div id="pfNotice" class="pf-problem">
           Can’t load the search index. Make sure your GitHub Action created
           <code>/pagefind/</code> and that
           <a href="/pagefind/manifest.json" rel="nofollow">/pagefind/manifest.json</a>
@@ -103,7 +100,7 @@
   </footer>
 
   <script>
-    // ==== Theme init ====
+    // ===== Theme init =====
     const root = document.documentElement;
     (function initTheme(){
       const saved = localStorage.getItem('cl-theme');
@@ -117,11 +114,10 @@
       root.setAttribute('data-theme', next); localStorage.setItem('cl-theme', next);
     });
 
-    // ==== Menu dropdown ====
+    // ===== Menu dropdown =====
     const menuToggle = document.getElementById('menuToggle');
     const dropdown   = document.getElementById('dropdown');
     const backdrop   = document.getElementById('backdrop');
-
     function openDropdown(open){
       dropdown.classList.toggle('open', open);
       backdrop.classList.toggle('show', open);
@@ -142,7 +138,7 @@
     document.addEventListener('keydown', e=>{ if(e.key==='Escape') openDropdown(false); });
     dropdown.addEventListener('click', e=>{ if(e.target.tagName==='A') openDropdown(false); });
 
-    // ==== Pagefind UI + ?q= hydration + index check ====
+    // ===== Pagefind UI + robust index check =====
     function waitFor(selector, timeout=1500){
       return new Promise((resolve)=>{
         const t0 = performance.now();
@@ -154,25 +150,29 @@
       });
     }
 
-    async function ensureIndex(){
-      try{
-        const r = await fetch('/pagefind/manifest.json', { cache: 'no-store' });
-        if (!r.ok) throw new Error('manifest missing');
-      }catch(e){
-        document.getElementById('pfNotice').style.display = 'block';
+    async function checkManifestWithRetries(retries=4){
+      const notice = document.getElementById('pfNotice');
+      for (let i = 0; i < retries; i++){
+        try{
+          const bust = Date.now();
+          const r = await fetch(`/pagefind/manifest.json?bust=${bust}`, { cache: 'no-store' });
+          if (r.ok) { notice.style.display = 'none'; return true; }
+        }catch(_){}
+        await new Promise(r => setTimeout(r, 400 * (i + 1)));
       }
+      notice.style.display = 'block';
+      return false;
     }
 
     document.addEventListener('DOMContentLoaded', async () => {
-      // Tell Pagefind where your bundle is!
+      // Initialize Pagefind UI
       new PagefindUI({
         element: "#search",
-        bundlePath: "/pagefind/",
         showImages: false,
         translations: { placeholder: "Search Corridor Ledger" }
       });
 
-      // If URL has ?q=, inject it once the UI input exists
+      // Hydrate from ?q=
       const q = new URLSearchParams(location.search).get('q');
       if (q) {
         const input = await waitFor('.pagefind-ui__search-input');
@@ -182,8 +182,12 @@
         }
       }
 
-      // Check index availability and show a friendly hint if missing
-      ensureIndex();
+      // Check index; if CDN was slow, we also re-check after a bit
+      const ok = await checkManifestWithRetries();
+      if (!ok) {
+        // try one last time after Pagefind has likely warmed caches
+        setTimeout(checkManifestWithRetries, 2000);
+      }
     });
   </script>
 </body>
