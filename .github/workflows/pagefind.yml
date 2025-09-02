@@ -13,15 +13,18 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      # Build the search index into /pagefind
-      - name: Build Pagefind index
-        run: npx pagefind --site . --output-path pagefind
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
 
-      # Commit the /pagefind folder back to the repo (served by GitHub Pages/Cloudflare)
-      - name: Commit pagefind output
+      - name: Build Pagefind index
+        run: npx -y pagefind@latest --site . --output-path pagefind
+
+      - name: Commit /pagefind
         run: |
           git config user.name "github-actions"
           git config user.email "actions@users.noreply.github.com"
           git add pagefind
-          git commit -m "Update Pagefind index" || echo "No changes to commit"
+          git commit -m "Update Pagefind index" || echo "No changes"
           git push
