@@ -1,30 +1,54 @@
-name: Build Pagefind
+name: Build Pagefind index
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ main ]
+    paths:
+      - "**/*.html"
+      - "**/*.md"
+      - "assets/**"
+      - "main.css"
+      - ".github/workflows/pagefind.yml"
   workflow_dispatch:
 
+# IMPORTANT: allow this workflow to write commits back to the repo
 permissions:
   contents: write
 
 jobs:
-  build:
+  pagefind:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - uses: actions/setup-node@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
         with:
           node-version: 20
+
       - name: Install Pagefind
-        run: npm install pagefind@latest --no-save
-      - name: Build search index (and bundle UI)
-        # This writes the UI + manifest.json into /pagefind (no underscore)
-        run: npx pagefind --source . --bundle-dir pagefind
-      - name: Commit /pagefind to repo
-        uses: stefanzweifel/git-auto-commit-action@v5
-        with:
-          commit_message: "chore(search): update Pagefind bundle"
-          file_pattern: pagefind/**
+        run: npm i pagefind@latest
+
+      # Index the built site in the repo (root) and write to /pagefind
+      - name: Build Pagefind index
+        run: npx pagefind --site . --output-path ./pagefind
+
+      - name: Verify index contents
+        run: |
+          test -f ./pagefind/manifest.json
+          ls -la ./pagefind | head -50
+
+      - name: Commit & push /pagefind
+        run: |
+          if [ -n "$(git status --porcelain pagefind)" ]; then
+            git config user.name  "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add pagefind
+            git commit -m "Build Pagefind index"
+            git push
+          else
+            echo "No changes in /pagefind"
+          fi
