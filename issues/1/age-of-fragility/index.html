@@ -1,1 +1,309 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>The Age of Economic Fragility · Corridor Ledger</title>
+  <meta name="description" content="Debt, demographics, energy, and politics: how fragility spread across the U.S., China, and Europe—and why shocks now travel faster and cut deeper.">
+  <link rel="stylesheet" href="/main.css" />
+  <link rel="icon" href="/favicon.ico" />
 
+  <!-- Open Graph -->
+  <meta property="og:title" content="The Age of Economic Fragility · Corridor Ledger">
+  <meta property="og:description" content="Debt, demographics, energy, and politics: how fragility spread across the U.S., China, and Europe.">
+  <meta property="og:image" content="/issue1_cover.png">
+  <meta property="og:type" content="article">
+
+  <style>
+    /* During theme flip, nuke transitions to avoid any flicker anywhere */
+    html.theme-switching *, html.theme-switching *::before, html.theme-switching *::after { transition: none !important; }
+
+    /* Comments tile aligned left */
+    .comments-hero.hero { text-align: left; }
+
+    /* Form layout */
+    .comment-form { display: grid; gap: 12px; margin-top: 10px; width: 100%; max-width: 820px; }
+    .comment-form label { display: grid; gap: 6px; font-weight: 600; color: var(--ink); }
+    .comment-form input[type="text"], .comment-form input[type="email"], .comment-form input[type="url"], .comment-form textarea {
+      width: 100%; padding: .7rem .9rem; border: 1px solid var(--border); border-radius: 10px;
+      background: var(--paper); color: var(--ink); font: inherit; line-height: 1.4;
+    }
+    .comment-form textarea { resize: vertical; min-height: 132px; }
+
+    /* No blue glow on focus */
+    .comment-form input:focus, .comment-form textarea:focus { outline: none; border-color: var(--border); box-shadow: none; }
+
+    /* Submit button: only the tiny “grow” animates */
+    .btn-submit {
+      display: inline-block; align-self: start; padding: .65rem 1rem;
+      border: 1px solid var(--border); border-radius: 10px;
+      background: var(--paper); color: var(--ink);
+      text-decoration: none; font-size: 1rem; font-weight: 600; cursor: pointer;
+      transition: transform .06s ease;
+    }
+    .btn-submit:hover {
+      font-weight: 700; transform: translateY(-1px);
+      background: var(--ink); color: var(--paper); border-color: var(--ink);
+    }
+    .btn-submit:focus { outline: none; box-shadow: none; }
+    .btn-submit:active { transform: translateY(0); }
+
+    /* Success note centered */
+    #comment-submitted {
+      display: none; margin: 0 0 10px; padding: .6rem .8rem;
+      border: 1px solid var(--border); border-radius: 10px; background: var(--paper);
+      color: var(--ink); text-align: center;
+    }
+
+    /* Rendered comments list */
+    #comments { list-style: none; padding: 0; margin: 18px 0 0; display: grid; gap: 12px; }
+    .comment-item { border: 1px solid var(--border); border-radius: 10px; background: var(--paper); padding: 12px; }
+    .comment-item .who { font-weight: 700; }
+    .comment-item .when { color: var(--muted); font-size: .85rem; }
+    .comment-item .what { margin-top: 6px; white-space: pre-wrap; }
+
+    /* Article typography */
+    .story h2, .refs h2 { margin-top: 0; }
+    .story h3 { margin: 1.2rem 0 .4rem; }
+    .story p { margin: .7rem 0; }
+    .story ul { margin: .5rem 0 .9rem 1.2rem; }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header class="site-header">
+    <div class="brand">
+      <button class="icon-btn menu-btn" id="menuToggle" aria-label="Open menu" aria-expanded="false" aria-controls="dropdown">☰</button>
+      <a href="/" class="logo-link" aria-label="Corridor Ledger home">
+        <img src="/wordmark_header_1200w.png" class="wordmark wordmark-light" alt="Corridor Ledger" />
+        <img src="/wordmark_header_dark_1200w.png" class="wordmark wordmark-dark" alt="Corridor Ledger" />
+      </a>
+      <button class="icon-btn theme-btn" id="themeToggle" aria-label="Toggle dark mode">
+        <img src="/sun_grunge_black_transparent.png" class="theme-icon theme-icon-sun" alt="" />
+        <img src="/moon_grunge_white_transparent.png" class="theme-icon theme-icon-moon" alt="" />
+      </button>
+    </div>
+
+    <nav class="nav desktop-nav" aria-label="Primary">
+      <a href="/">Home</a>
+      <a href="/mechanisms/">Mechanisms</a>
+      <a href="/figures/">Figures</a>
+      <a href="/numbers/">Numbers</a>
+      <a href="/dossiers/">Dossiers</a>
+    </nav>
+
+    <div class="dropdown" id="dropdown" aria-hidden="true">
+      <form class="dropdown-search" onsubmit="return false" role="search">
+        <input class="search-input" type="search" placeholder="Search Corridor Ledger" />
+      </form>
+      <nav class="dropdown-nav">
+        <a href="/" data-route="/">Home</a>
+        <a href="/mechanisms/" data-route="/mechanisms/">Mechanisms</a>
+        <a href="/figures/" data-route="/figures/">Figures</a>
+        <a href="/numbers/" data-route="/numbers/">Numbers</a>
+        <a href="/dossiers/" data-route="/dossiers/">Dossiers</a>
+      </nav>
+    </div>
+    <div class="dropdown-backdrop" id="backdrop" aria-hidden="true"></div>
+  </header>
+
+  <!-- Indexed for search -->
+  <main class="container" data-pagefind-body data-section="Issues" data-issue="1" data-article="The Age of Economic Fragility">
+    <section class="rail">
+      <article class="hero hero-center">
+        <h1 class="headline">The Age of Economic Fragility</h1>
+        <p class="dek">Debt, demographics, energy, and politics across the U.S., China, and Europe—and why shocks now travel faster and cut deeper.</p>
+      </article>
+    </section>
+
+    <!-- Article body -->
+    <section class="rail">
+      <article class="hero story">
+        <p>In an era defined by towering debt, fractured trade systems, and the looming specter of financial instability, the global economy sits at a precarious juncture. Fragility is no longer confined to emerging markets or volatile commodities—it is woven into the balance sheets of the world’s largest powers. The United States, China, and the European Union, the three poles of global commerce, each face their own vulnerabilities. Together, their weaknesses threaten to magnify one another, creating an ecosystem in which shocks travel faster, last longer, and leave deeper scars.</p>
+
+        <h3>America’s Growing Reckoning</h3>
+        <p>The United States has long enjoyed the “exorbitant privilege” of issuing the world’s reserve currency, but beneath that privilege lies an increasingly unstable foundation. Federal debt has surpassed $35 trillion, crossing levels once thought unmanageable. Interest payments alone are projected to exceed the defense budget within the decade, a historic shift that diverts resources from everything from infrastructure to education. The bond market, which once quietly absorbed Treasury issuance, has grown jittery; yields have climbed as investors demand compensation for fiscal indiscipline and inflation risk.</p>
+        <p>This strain coincides with a slowing domestic economy. Growth has cooled from its post-pandemic surge, while inflation, though retreating, has proven stubborn. The Federal Reserve’s cycle of rate hikes stabilized prices but at the cost of higher borrowing costs for households, businesses, and government alike. Banks face renewed stress as commercial real estate sags under remote-work vacancies, and regional lenders remain exposed to fragile balance sheets.</p>
+        <p>Yet the greatest danger may be political paralysis. Debt-ceiling standoffs have turned routine budgeting into moments of near-crisis, shaking global confidence. Washington’s inability to address long-term entitlement spending, coupled with polarized tax policy, leaves fiscal sustainability unresolved. The United States retains immense innovative capacity—its technology sector leads the world—but fragility lies in the widening gap between its financial reality and its political will to act.</p>
+
+        <h3>China’s Structural Stagnation</h3>
+        <p>China’s rise reshaped the global economy, but the forces that once propelled it are now sources of weakness. Growth, once reliably above 8 percent, has slowed to near 4–5 percent, exposing structural flaws. The property sector, which accounted for a quarter of GDP, is in crisis; giants such as Evergrande have collapsed, while unfinished housing projects scar skylines and household wealth erodes. Local governments, heavily dependent on land sales for revenue, now face fiscal crises of their own.</p>
+        <p>Beijing has sought to pivot toward a consumer-driven economy, but confidence is faltering. Youth unemployment has surged past 20 percent in some regions, fueling social unease. Exports remain critical, yet global supply chain diversification—accelerated by U.S. tariffs, pandemic disruptions, and geopolitical frictions—has begun to reduce China’s dominance in manufacturing. Southeast Asia, India, and Mexico are absorbing production once firmly rooted in Chinese factories.</p>
+        <p>Compounding these challenges is a demographic time bomb. The population is shrinking for the first time in decades, with the working-age cohort contracting as the elderly share rises. This shift threatens both labor supply and domestic consumption. Beijing retains formidable control—state-owned enterprises and capital controls give policymakers levers unthinkable in liberal economies—but such centralization risks stifling the dynamism needed for long-term recovery. China’s fragility is thus dual: an economy that cannot grow as it once did, and a leadership reluctant to admit how deep the problems run.</p>
+
+        <h3>Europe’s Balancing Act</h3>
+        <p>The European Union, often overshadowed by the duopoly of Washington and Beijing, is itself navigating a fragile path. Growth remains sluggish, with the eurozone struggling to emerge from what some economists describe as a “lost decade” of stagnation following the global financial crisis and sovereign debt turmoil. Energy security remains an unresolved vulnerability; the war in Ukraine exposed Europe’s dependence on Russian gas, forcing a costly scramble to secure alternatives. While liquefied natural gas imports from the United States and Middle East have provided relief, price volatility lingers.</p>
+        <p>Debt, too, casts a shadow. Italy’s public debt stands above 140 percent of GDP, raising fears of another sovereign flare-up. France faces its own fiscal strains, while Germany—long the bloc’s anchor—is grappling with slowing exports, industrial contraction, and political fragmentation. The European Central Bank’s tightening cycle cooled inflation but has dampened recovery, leaving policymakers walking a fine line between discipline and stimulus.</p>
+        <p>Institutional fragility compounds economic strain. The EU’s ability to forge unified fiscal policy remains limited; divergent national interests slow decision-making. Northern states resist shared debt burdens, while southern states push for solidarity. The green transition, though essential, adds another layer of cost and complexity, with industries under pressure to decarbonize amid global competition. Europe’s strength lies in its regulatory power and its ability to set global standards—but without renewed dynamism, that influence risks becoming more symbolic than structural.</p>
+
+        <h3>Fragility in Concert</h3>
+        <p>Each power’s vulnerabilities feed into a larger cycle. America’s debt leaves the dollar strong but fragile; China’s slowdown curtails demand for commodities and weakens global trade; Europe’s stagnation drags on global demand. Together, they create a world economy prone to sudden shocks with limited capacity to absorb them. Financial markets reflect this fragility: volatility spikes with every hint of central bank hesitation, every sign of political deadlock, every geopolitical escalation.</p>
+        <p>The global system has long been built on the assumption that the U.S., China, and EU could anchor stability even in times of crisis. Today, those anchors are themselves shifting sands. Fragility is no longer a peripheral concern—it is the defining feature of the world economy.</p>
+      </article>
+    </section>
+
+    <!-- References as its own clean tile -->
+    <section class="rail">
+      <article class="hero refs">
+        <h2>References &amp; Further Reading</h2>
+        <ul>
+          <li>U.S. Congressional Budget Office (CBO), <em>The Budget and Economic Outlook 2025–2035</em></li>
+          <li>U.S. Federal Reserve, <em>Financial Stability Report</em> (2024–2025)</li>
+          <li>International Monetary Fund, <em>World Economic Outlook</em> (April 2025)</li>
+          <li>Bank for International Settlements, <em>Quarterly Review</em> (June 2025)</li>
+          <li>European Central Bank, <em>Economic Bulletin</em> (2025)</li>
+          <li>Eurostat, Quarterly GDP and Debt Data (2024–2025)</li>
+          <li>National Bureau of Statistics of China, <em>Economic Indicators Report</em> (2025)</li>
+          <li>World Bank, <em>Global Economic Prospects</em> (January 2025)</li>
+          <li>Peterson Institute for International Economics, China’s Economic Transition</li>
+          <li>CSIS, Europe’s Energy Security After Ukraine</li>
+        </ul>
+      </article>
+    </section>
+
+    <!-- Comments -->
+    <section class="rail">
+      <article class="hero comments-hero">
+        <h2 style="margin-top:0">Comments</h2>
+
+        <!-- Submission success -->
+        <div id="comment-submitted">Thanks — your comment was submitted. If moderation is enabled, it will appear after review.</div>
+
+        <!-- Comment form -->
+        <form
+          action="https://cl-comments.3wh.workers.dev"
+          method="POST"
+          class="comment-form">
+
+          <input type="hidden" name="options[slug]" value="age-of-economic-fragility">
+          <input type="hidden" name="options[redirect]" value="https://www.corridorledger.com/issues/1/age-of-economic-fragility/#comment-submitted">
+
+          <!-- Honeypot (keep empty) -->
+          <div style="position:absolute;left:-5000px" aria-hidden="true">
+            <label>Leave this field empty
+              <input type="text" name="fields[website]" tabindex="-1" autocomplete="off">
+            </label>
+          </div>
+
+          <label>Name
+            <input required name="fields[name]" type="text" placeholder="Your name">
+          </label>
+
+          <label>Website (optional)
+            <input name="fields[url]" type="url" placeholder="https://">
+          </label>
+
+          <label>Comment
+            <textarea required name="fields[message]" rows="6" placeholder="Add your comment…"></textarea>
+          </label>
+
+          <button class="btn-submit" type="submit">Post comment</button>
+          <p class="muted" style="margin:.5rem 0 0; text-align:center">No login required. Basic spam checks apply.</p>
+        </form>
+
+        <!-- Rendered comments -->
+        <ul id="comments"></ul>
+      </article>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="foot-left">
+      <a href="/feed.xml">RSS</a> · <a href="/corrections/">Corrections</a> ·
+      <a href="mailto:editor@corridorledger.com">Editor</a>
+    </div>
+    <div class="foot-right">© 2025 Corridor Ledger</div>
+  </footer>
+
+  <script>
+    // ----- menu + theme -----
+    const menuToggle=document.getElementById('menuToggle');
+    const dropdown=document.getElementById('dropdown');
+    const backdrop=document.getElementById('backdrop');
+    const themeToggle=document.getElementById('themeToggle');
+    const root=document.documentElement;
+
+    function openDropdown(open){
+      dropdown.classList.toggle('open',open);
+      backdrop.classList.toggle('show',open);
+      menuToggle?.setAttribute('aria-expanded',open?'true':'false');
+      dropdown?.setAttribute('aria-hidden',open?'false':'true');
+      document.body.classList.toggle('no-scroll',open);
+      if(open){ markActive(); dropdown.querySelector('.search-input')?.focus(); }
+    }
+    menuToggle?.addEventListener('click',()=>openDropdown(!dropdown.classList.contains('open')));
+    backdrop?.addEventListener('click',()=>openDropdown(false));
+    document.addEventListener('keydown',e=>{ if(e.key==='Escape') openDropdown(false); });
+    dropdown?.addEventListener('click',e=>{ if(e.target.tagName==='A') openDropdown(false); });
+
+    function markActive(){
+      const path=(location.pathname.replace(/\/+$/,'/')||'/');
+      document.querySelectorAll('.dropdown-nav [data-route]').forEach(a=>{
+        const r=a.getAttribute('data-route');
+        a.classList.toggle('active', (r==='/'&&path==='/') || (r!=='/'&&path.startsWith(r)));
+      });
+    }
+
+    // Theme init
+    (function initTheme(){
+      const saved=localStorage.getItem('cl-theme');
+      if(saved==='dark'||saved==='light'){ root.setAttribute('data-theme',saved); }
+      else if(window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches){
+        root.setAttribute('data-theme','dark');
+      }
+    })();
+
+    // Theme toggle: disable transitions during flip to prevent any button lag
+    themeToggle?.addEventListener('click',()=>{
+      root.classList.add('theme-switching');
+      const next=root.getAttribute('data-theme')==='dark'?'light':'dark';
+      root.setAttribute('data-theme',next);
+      localStorage.setItem('cl-theme',next);
+      setTimeout(()=>root.classList.remove('theme-switching'), 120);
+    });
+
+    // Show success after redirect
+    if (location.hash === '#comment-submitted') {
+      const el = document.getElementById('comment-submitted');
+      if (el) el.style.display = 'block';
+    }
+
+    // ----- Load comments (reads merged JSON files) -----
+    (async function loadComments(){
+      const OWNER='CorridorLedger';
+      const REPO='corridorledger-site';
+      const SLUG='age-of-economic-fragility';
+      const BRANCH='main';
+
+      const listUrl=`https://api.github.com/repos/${OWNER}/${REPO}/contents/comments/${SLUG}?ref=${BRANCH}`;
+      const out=document.getElementById('comments');
+      if(!out) return;
+
+      try{
+        const res=await fetch(listUrl, { headers:{ 'Accept':'application/vnd.github+json' }});
+        if(!res.ok){ return; } // none yet
+        const items=await res.json();
+        items.sort((a,b)=>b.name.localeCompare(a.name)); // newest first
+
+        for(const file of items){
+          if(file.type!=='file') continue;
+          const jr=await fetch(file.download_url);
+          const j=await jr.json();
+
+          const li=document.createElement('li');
+          li.className='comment-item';
+          li.innerHTML=`
+            <div class="who">${escapeHtml(j.name || 'Reader')}</div>
+            <div class="when">${formatWhen(j.date)}</div>
+            <div class="what">${escapeHtml(j.message || '')}</div>
+          `;
+          out.appendChild(li);
+        }
+      }catch(e){ console.warn('comments load failed', e); }
+
+      function escapeHtml(s){ return (s||'').replace(/[&<>"']/g, c=>({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c])); }
+      function formatWhen(iso){ try{ return new Date(iso).toLocaleString(); }catch{ return ''; } }
+    })();
+  </script>
+</body>
+</html>
