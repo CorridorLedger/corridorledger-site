@@ -3,20 +3,74 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>🔵 Spotlight Keepers · Corridor Ledger</title>
+  <title>Spotlight Keepers · Corridor Ledger</title>
+  <meta name="description" content="The organizations and funders that decide what gets attention—how frames travel from strategy memos to headlines, and why some issues never arrive.">
   <link rel="stylesheet" href="/main.css" />
   <link rel="icon" href="/favicon.ico" />
 
-  <!-- Social / SEO -->
-  <meta name="description" content="🔵 One-sentence deck for this article." />
-  <meta property="og:title" content="🔵 Spotlight Keepers · Corridor Ledger">
-  <meta property="og:description" content="🔵 One-sentence deck for this article.">
-  <meta property="og:image" content="/issues/1/spotlight-keepers/og.jpg">
-  <meta name="twitter:card" content="summary_large_image">
-  <link rel="canonical" href="https://www.corridorledger.com/issues/1/spotlight-keepers/">
+  <!-- Open Graph -->
+  <meta property="og:title" content="Spotlight Keepers · Corridor Ledger">
+  <meta property="og:description" content="The organizations and funders that decide what gets attention—how frames travel from strategy memos to headlines, and why some issues never arrive.">
+  <meta property="og:image" content="/issue1_cover.png">
+  <meta property="og:type" content="article">
+
+  <style>
+    /* During theme flip, nuke transitions to avoid any flicker anywhere */
+    html.theme-switching *, html.theme-switching *::before, html.theme-switching *::after { transition: none !important; }
+
+    /* Comments tile aligned left */
+    .comments-hero.hero { text-align: left; }
+
+    /* Form layout */
+    .comment-form { display: grid; gap: 12px; margin-top: 10px; width: 100%; max-width: 820px; }
+    .comment-form label { display: grid; gap: 6px; font-weight: 600; color: var(--ink); }
+    .comment-form input[type="text"], .comment-form input[type="email"], .comment-form input[type="url"], .comment-form textarea {
+      width: 100%; padding: .7rem .9rem; border: 1px solid var(--border); border-radius: 10px;
+      background: var(--paper); color: var(--ink); font: inherit; line-height: 1.4;
+    }
+    .comment-form textarea { resize: vertical; min-height: 132px; }
+
+    /* No blue glow on focus */
+    .comment-form input:focus, .comment-form textarea:focus { outline: none; border-color: var(--border); box-shadow: none; }
+
+    /* Submit button: only the tiny “grow” animates */
+    .btn-submit {
+      display: inline-block; align-self: start; padding: .65rem 1rem;
+      border: 1px solid var(--border); border-radius: 10px;
+      background: var(--paper); color: var(--ink);
+      text-decoration: none; font-size: 1rem; font-weight: 600; cursor: pointer;
+      transition: transform .06s ease;
+    }
+    .btn-submit:hover {
+      font-weight: 700; transform: translateY(-1px);
+      background: var(--ink); color: var(--paper); border-color: var(--ink);
+    }
+    .btn-submit:focus { outline: none; box-shadow: none; }
+    .btn-submit:active { transform: translateY(0); }
+
+    /* Success note centered */
+    #comment-submitted {
+      display: none; margin: 0 0 10px; padding: .6rem .8rem;
+      border: 1px solid var(--border); border-radius: 10px; background: var(--paper);
+      color: var(--ink); text-align: center;
+    }
+
+    /* Rendered comments list */
+    #comments { list-style: none; padding: 0; margin: 18px 0 0; display: grid; gap: 12px; }
+    .comment-item { border: 1px solid var(--border); border-radius: 10px; background: var(--paper); padding: 12px; }
+    .comment-item .who { font-weight: 700; }
+    .comment-item .when { color: var(--muted); font-size: .85rem; }
+    .comment-item .what { margin-top: 6px; white-space: pre-wrap; }
+
+    /* Article typography */
+    .story h2, .refs h2 { margin-top: 0; }
+    .story h3 { margin: 1.2rem 0 .4rem; }
+    .story p { margin: .7rem 0; }
+    .story ul { margin: .5rem 0 .9rem 1.2rem; }
+  </style>
 </head>
 <body>
-  <!-- HEADER (same as home) -->
+  <!-- Header -->
   <header class="site-header">
     <div class="brand">
       <button class="icon-btn menu-btn" id="menuToggle" aria-label="Open menu" aria-expanded="false" aria-controls="dropdown">☰</button>
@@ -53,32 +107,161 @@
     <div class="dropdown-backdrop" id="backdrop" aria-hidden="true"></div>
   </header>
 
-  <main class="container">
-    <!-- Breadcrumb / back to Issue -->
-    <p class="muted" style="margin:8px 0;">
-      <a href="/issues/1/" style="text-decoration:none;">← Issue No. 1: Spotlight Keepers</a>
-    </p>
-
-    <!-- Article header -->
-    <article class="hero" style="text-align:left">
-      <h1 class="headline">🔵 Spotlight Keepers</h1>
-      <p class="dek">🔵 A crisp two-sentence deck. What the reader will learn.</p>
-      <p class="muted">Published 🔵 Sept 5, 2025 · 🔵 7 min · In <a href="/mechanisms/">Mechanisms</a></p>
-    </article>
-
-    <!-- Body -->
-    <section class="rail" style="max-width: 70ch; margin: 0 auto;">
-      <p>🔵 Your lede paragraph…</p>
-      <h2>🔵 Subhead</h2>
-      <p>Body copy… include links; dark mode keeps them legible.</p>
-      <figure class="one-number">
-        <img src="art-1.png" alt="🔵 Optional art" />
-        <figcaption>🔵 Caption if needed.</figcaption>
-      </figure>
+  <!-- data-pagefind-body => indexed for search -->
+  <main class="container" data-pagefind-body data-section="Issues" data-issue="1" data-article="Spotlight Keepers">
+    <section class="rail">
+      <article class="hero hero-center">
+        <h1 class="headline">Spotlight Keepers</h1>
+        <p class="dek">Who holds the mic when attention moves on? A look at the quorum makers and agenda shapers.</p>
+      </article>
     </section>
 
-    <!-- (Optional) Comments: drop Giscus here later -->
+    <!-- Article body -->
+    <section class="rail">
+      <article class="hero story">
+        <p>A story does not rise to national prominence on its own. Somewhere upstream, before headlines and hashtags, a smaller circle of institutions and individuals decide what is worth the public’s attention. These are the spotlight keepers — the organizations that control which questions are asked, which voices are amplified, and which narratives are quietly shelved.</p>
 
+        <h3>The Unseen Assignment Desk</h3>
+        <p>Each morning, editors across television and print outlets scan the same handful of memos, press releases, and think-tank reports. The machinery resembles a national assignment desk: elite policy institutes and communications shops tee up themes that echo across newsrooms. It isn’t coincidence when the same phrases appear on multiple networks within hours; it is the product of upstream coordination.</p>
+        <p>The Council on Foreign Relations, the Brookings Institution, the Atlantic Council, and similar bodies serve as perennial feeders. Their briefings and “expert availability” lists shape coverage priorities. When Brookings releases a report on tech regulation or the Atlantic Council hosts a panel on disinformation, major outlets reliably follow with coverage.</p>
+
+        <h3>How Language Travels</h3>
+        <p>This influence is not just about what gets covered, but how. Consider the phrase “great power competition.” In 2018, it surfaced in Pentagon strategy documents. Within months, think tanks held forums using the phrase, scholars invoked it in interviews, and by 2020 it had become the default lens for describing U.S.–China relations. A framing born in a strategic document ended up defining the discourse of entire news cycles.</p>
+        <p>Linguist George Lakoff has long argued that frames determine perception: call an estate tax a “death tax” and you shift public opinion. The spotlight keepers work in this terrain, seeding terms that later appear to be organic but in reality are engineered for resonance.</p>
+
+        <h3>Foundations as Gatekeepers of Topics</h3>
+        <p>Private foundations play a quieter role, funding both research and coverage. The Ford Foundation, the Rockefeller Foundation, and newer players like the Chan Zuckerberg Initiative fund studies that become the raw material for news articles. Grants to journalism nonprofits further amplify preferred narratives. When ProPublica or NPR receives foundation support for a coverage area, that area gains sustained visibility. Issues outside those streams often fade into obscurity.</p>
+        <p>This isn’t inherently nefarious; foundations often fund important work. But it raises a structural question: who decides which issues deserve permanent spotlight and which are left in the dark?</p>
+
+        <h3>The Pipeline of Influence</h3>
+        <ul>
+          <li><strong>Research framing</strong> – Policy papers define what constitutes a problem.</li>
+          <li><strong>Media translation</strong> – PR teams and op-eds render those papers into sound bites.</li>
+          <li><strong>Broadcast echo</strong> – Networks and digital outlets replicate those frames, often word-for-word.</li>
+        </ul>
+        <p>By the time the public encounters the narrative, its shape has already been decided.</p>
+
+        <h3>Case Study: Disinformation as National Security Threat</h3>
+        <p>In 2022, the Department of Homeland Security announced a Disinformation Governance Board. The idea seemed sudden. Yet months before, think tanks and security NGOs had saturated the discourse with reports on “the information ecosystem” and “hybrid threats.” Panels warned of disinformation undermining democracy. By the time DHS acted, major outlets had already run features echoing the same language.</p>
+        <p>The rollout collapsed under political backlash, but the framing remained. Disinformation was cemented as a national security category — less by public debate than by upstream agenda-setting.</p>
+
+        <h3>Media as Multipliers, Not Origins</h3>
+        <p>It is tempting to believe social media decentralized agenda-setting. In reality, the same gatekeepers use platforms as amplifiers. Twitter trending lists often light up immediately after coordinated campaigns: a think tank panel streamed live, a university study dropped with pre-packaged graphics, or a foundation-funded NGO launched a new initiative.</p>
+        <p>When Facebook partnered with the Atlantic Council’s Digital Forensic Research Lab in 2018 to police “misinformation,” few noticed the quiet transfer of authority: a private NGO helping decide what billions of users would see or not see. The spotlight was adjusted, not by elected officials, but by a consortium of policy professionals and tech executives.</p>
+
+        <h3>The Illusion of Spontaneous Consensus</h3>
+        <p>When multiple outlets adopt identical formulations — “threat to democracy,” “misinformation ecosystem,” “trusted partners” — it signals not independent discovery but convergent sourcing from a narrow set of institutions. What appears as spontaneous consensus often originates as coordinated framing.</p>
+        <p>Walter Lippmann observed a century ago that the press is not a mirror of reality but “the beam of a searchlight that moves restlessly about.” The modern twist is that the searchlight is programmed by a small set of boards and funders who steer it deliberately.</p>
+
+        <h3>Historical Parallels</h3>
+        <p>This is not entirely new. In the early 20th century, Edward Bernays — the father of public relations — described propaganda as the “invisible government” that organizes public opinion. He argued that in a complex society, elites must manage attention for democracy to function. Today’s spotlight keepers are heirs to that philosophy, armed with far more sophisticated tools.</p>
+        <p>During the Cold War, the Congress for Cultural Freedom, covertly funded by the CIA, shaped intellectual discourse in Europe by funding magazines, conferences, and cultural institutions. What people thought was organic debate was often carefully curated. The structures are more transparent today, but the effect is similar: topics rise and fall according to institutional backing.</p>
+
+        <h3>Why Some Issues Never Arrive</h3>
+        <p>For every theme elevated, others are ignored. Corporate tax havens, contractor influence in war zones, or the consolidation of agricultural land rarely receive sustained coverage compared to more photogenic or fundable topics. Silence is as much a product of spotlight keeping as attention.</p>
+        <p>The late sociologist Herbert Gans noted that “what is not newsworthy is as important as what is.” The absence of coverage reflects the gatekeeping function at least as strongly as the presence of repeated narratives.</p>
+
+        <h3>The Business Model Connection</h3>
+        <p>Advertising models compound the effect. Media outlets dependent on clicks and sponsorships gravitate toward pre-packaged narratives that arrive with ready-made experts and infographics. Running those is cheaper and safer than investing in original reporting. The spotlight keepers know this and tailor outputs accordingly.</p>
+        <p>Think tanks often prepare executive summaries, talking points, and even suggested interviewees, ensuring that editors under deadline pressure will default to their material. In effect, the economics of journalism dovetail with the supply chain of agenda-setting.</p>
+
+        <h3>The Role of Security Clearance Culture</h3>
+        <p>In areas like defense and intelligence, journalists often lack access to primary information. They rely on briefings from officials or semi-official experts at defense think tanks. This creates a dependency structure: coverage of war, surveillance, or cybersecurity largely reflects the views of those already embedded in the system. Independent analysis struggles to break through.</p>
+        <p>The military-industrial complex Eisenhower warned of now includes its narrative wing: defense contractors funding think tanks that generate the very analysis quoted in the news about future conflicts.</p>
+
+        <h3>When Framing Becomes Policy</h3>
+        <p>Narratives seeded by spotlight keepers don’t just dominate coverage; they often harden into policy. The sequence runs: research paper → media coverage → congressional hearing → legislation. By the time elected officials debate an issue, the range of acceptable options has already been bounded by prior framing.</p>
+        <p>Climate change coverage offers an example. For years, attention focused narrowly on carbon emissions. Only recently, after sustained efforts by environmental NGOs and funders, did coverage expand to topics like methane leaks or biodiversity loss. The agenda expanded not by natural discovery but by deliberate reframing.</p>
+
+        <h3>The Psychological Effect</h3>
+        <p>For the public, the repetition of certain themes creates a sense of inevitability. If multiple outlets say an issue is urgent, people assume it must be. Psychologists call this the availability heuristic: we judge importance by how easily examples come to mind. Spotlight keepers exploit this cognitive bias by ensuring certain examples are everywhere.</p>
+
+        <h3>Accountability Without Visibility</h3>
+        <p>One of the difficulties in scrutinizing spotlight keepers is that their decisions are rarely transparent. Think tank funding sources may be opaque. Foundations announce broad themes but not the deliberations behind them. Editorial decisions to assign a story often cite “news value” without acknowledging the upstream push that made it feel newsworthy.</p>
+        <p>This lack of visibility means accountability is minimal. Citizens cannot vote spotlight keepers out of office, yet their influence over public discourse rivals that of elected officials.</p>
+
+        <h3>Case Study: Tech Regulation Narratives</h3>
+        <p>Over the past five years, the idea that social media platforms should be held accountable for harmful content has become common sense. But the framing — “platform responsibility,” “harmful but legal content,” “online safety” — was carefully cultivated. Reports by the Oxford Internet Institute, panels funded by the Omidyar Network, and pilot programs by NGOs like the Center for Countering Digital Hate all laid the groundwork. By the time governments introduced legislation, the rhetorical scaffolding was already in place.</p>
+
+        <h3>The International Dimension</h3>
+        <p>Spotlight keepers are not confined to Washington or New York. The European Union’s regulatory agenda is often foreshadowed by white papers from Brussels-based policy shops. Global NGOs circulate identical talking points across continents, creating the impression of global consensus. The World Economic Forum’s annual Davos meetings serve as an explicit stage for agenda-setting, with media outlets dutifully reporting on the priorities highlighted there.</p>
+
+        <h3>How Audiences Can Respond</h3>
+        <p>Recognizing spotlight keepers doesn’t mean disengagement; it means reading the news with a second lens. When a new theme dominates coverage, ask: who introduced this language? Which institutions benefit from this framing? What issues are being excluded?</p>
+        <p>Critical literacy requires not just fact-checking but frame-checking — understanding who built the lens through which the facts are presented.</p>
+
+        <h3>Why It Matters for Democracy</h3>
+        <p>The range of issues covered defines the boundaries of democratic imagination. If citizens debate only the topics selected for them, democracy narrows. Real accountability requires knowing not only what is being discussed, but why those topics and not others dominate attention.</p>
+
+        <h3>Conclusion</h3>
+        <p>Spotlight keepers thrive in invisibility. Their power is greatest when their role is unacknowledged. By tracing the memos, the panels, and the grants, we begin to see the contours of an engineered agenda. Journalism often prides itself on holding the powerful to account; the next frontier is holding accountable those who decide what journalism covers in the first place.</p>
+      </article>
+    </section>
+
+    <!-- References as its own clean tile -->
+    <section class="rail">
+      <article class="hero refs">
+        <h2>References &amp; Further Reading</h2>
+        <ul>
+          <li><em>Walter Lippmann</em>, <em>Public Opinion</em> (1922) — agenda-setting and the “searchlight.”</li>
+          <li><em>George Lakoff</em>, <em>Don’t Think of an Elephant!</em> (2004) — framing in political discourse.</li>
+          <li>Pentagon, <em>Summary of the 2018 National Defense Strategy</em> — “great power competition.”</li>
+          <li>Brookings &amp; Atlantic Council reports on disinformation (2018–2022).</li>
+          <li>Facebook Newsroom (2018): Partnering with Atlantic Council’s DFRLab.</li>
+          <li><em>Frances Stonor Saunders</em>, <em>The Cultural Cold War</em> (1999) — Congress for Cultural Freedom.</li>
+          <li><em>Herbert J. Gans</em>, <em>Deciding What’s News</em> (1979).</li>
+          <li>Brennan Center (2020): <em>The Intelligence Community and Private Contractors</em>.</li>
+          <li>Oxford Internet Institute studies on platform responsibility (2019–2021).</li>
+          <li>Coverage of DHS Disinformation Governance Board (2022).</li>
+          <li>World Economic Forum communiqués (Davos).</li>
+        </ul>
+      </article>
+    </section>
+
+    <!-- Comments -->
+    <section class="rail">
+      <article class="hero comments-hero">
+        <h2 style="margin-top:0">Comments</h2>
+
+        <!-- Submission success -->
+        <div id="comment-submitted">Thanks — your comment was submitted. If moderation is enabled, it will appear after review.</div>
+
+        <!-- Comment form -->
+        <form
+          action="https://cl-comments.3wh.workers.dev"
+          method="POST"
+          class="comment-form">
+
+          <input type="hidden" name="options[slug]" value="spotlight-keepers">
+          <input type="hidden" name="options[redirect]" value="https://www.corridorledger.com/issues/1/spotlight-keepers/#comment-submitted">
+
+          <!-- Honeypot (keep empty) -->
+          <div style="position:absolute;left:-5000px" aria-hidden="true">
+            <label>Leave this field empty
+              <input type="text" name="fields[website]" tabindex="-1" autocomplete="off">
+            </label>
+          </div>
+
+          <label>Name
+            <input required name="fields[name]" type="text" placeholder="Your name">
+          </label>
+
+          <label>Website (optional)
+            <input name="fields[url]" type="url" placeholder="https://">
+          </label>
+
+          <label>Comment
+            <textarea required name="fields[message]" rows="6" placeholder="Add your comment…"></textarea>
+          </label>
+
+          <button class="btn-submit" type="submit">Post comment</button>
+          <p class="muted" style="margin:.5rem 0 0; text-align:center">No login required. Basic spam checks apply.</p>
+        </form>
+
+        <!-- Rendered comments -->
+        <ul id="comments"></ul>
+      </article>
+    </section>
   </main>
 
   <footer class="site-footer">
@@ -89,8 +272,8 @@
     <div class="foot-right">© 2025 Corridor Ledger</div>
   </footer>
 
-  <!-- Same JS you use on home (menu + theme). Reuse to keep behavior consistent. -->
   <script>
+    // ----- menu + theme -----
     const menuToggle=document.getElementById('menuToggle');
     const dropdown=document.getElementById('dropdown');
     const backdrop=document.getElementById('backdrop');
@@ -100,15 +283,15 @@
     function openDropdown(open){
       dropdown.classList.toggle('open',open);
       backdrop.classList.toggle('show',open);
-      menuToggle.setAttribute('aria-expanded',open?'true':'false');
-      dropdown.setAttribute('aria-hidden',open?'false':'true');
+      menuToggle?.setAttribute('aria-expanded',open?'true':'false');
+      dropdown?.setAttribute('aria-hidden',open?'false':'true');
       document.body.classList.toggle('no-scroll',open);
       if(open){ markActive(); dropdown.querySelector('.search-input')?.focus(); }
     }
-    menuToggle.addEventListener('click',()=>openDropdown(!dropdown.classList.contains('open')));
-    backdrop.addEventListener('click',()=>openDropdown(false));
+    menuToggle?.addEventListener('click',()=>openDropdown(!dropdown.classList.contains('open')));
+    backdrop?.addEventListener('click',()=>openDropdown(false));
     document.addEventListener('keydown',e=>{ if(e.key==='Escape') openDropdown(false); });
-    dropdown.addEventListener('click',e=>{ if(e.target.tagName==='A') openDropdown(false); });
+    dropdown?.addEventListener('click',e=>{ if(e.target.tagName==='A') openDropdown(false); });
 
     function markActive(){
       const path=(location.pathname.replace(/\/+$/,'/')||'/');
@@ -118,6 +301,7 @@
       });
     }
 
+    // Theme init
     (function initTheme(){
       const saved=localStorage.getItem('cl-theme');
       if(saved==='dark'||saved==='light'){ root.setAttribute('data-theme',saved); }
@@ -125,10 +309,58 @@
         root.setAttribute('data-theme','dark');
       }
     })();
-    themeToggle.addEventListener('click',()=>{
+
+    // Theme toggle: disable transitions during flip to prevent any button lag
+    themeToggle?.addEventListener('click',()=>{
+      root.classList.add('theme-switching');
       const next=root.getAttribute('data-theme')==='dark'?'light':'dark';
-      root.setAttribute('data-theme',next); localStorage.setItem('cl-theme',next);
+      root.setAttribute('data-theme',next);
+      localStorage.setItem('cl-theme',next);
+      setTimeout(()=>root.classList.remove('theme-switching'), 120);
     });
+
+    // Show success after redirect
+    if (location.hash === '#comment-submitted') {
+      const el = document.getElementById('comment-submitted');
+      if (el) el.style.display = 'block';
+    }
+
+    // ----- Load comments (reads merged JSON files) -----
+    (async function loadComments(){
+      const OWNER='CorridorLedger';
+      const REPO='corridorledger-site';
+      const SLUG='spotlight-keepers';
+      const BRANCH='main';
+
+      const listUrl=`https://api.github.com/repos/${OWNER}/${REPO}/contents/comments/${SLUG}?ref=${BRANCH}`;
+      const out=document.getElementById('comments');
+      if(!out) return;
+
+      try{
+        const res=await fetch(listUrl, { headers:{ 'Accept':'application/vnd.github+json' }});
+        if(!res.ok){ return; } // none yet
+        const items=await res.json();
+        items.sort((a,b)=>b.name.localeCompare(a.name)); // newest first
+
+        for(const file of items){
+          if(file.type!=='file') continue;
+          const jr=await fetch(file.download_url);
+          const j=await jr.json();
+
+          const li=document.createElement('li');
+          li.className='comment-item';
+          li.innerHTML=`
+            <div class="who">${escapeHtml(j.name || 'Reader')}</div>
+            <div class="when">${formatWhen(j.date)}</div>
+            <div class="what">${escapeHtml(j.message || '')}</div>
+          `;
+          out.appendChild(li);
+        }
+      }catch(e){ console.warn('comments load failed', e); }
+
+      function escapeHtml(s){ return (s||'').replace(/[&<>"']/g, c=>({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c])); }
+      function formatWhen(iso){ try{ return new Date(iso).toLocaleString(); }catch{ return ''; } }
+    })();
   </script>
 </body>
 </html>
