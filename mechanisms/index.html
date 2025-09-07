@@ -45,20 +45,11 @@
 
     <section class="rail">
       <div class="issues-grid">
-        <!-- NEW: The New Feudalism -->
+        <!-- Issue 1: fits this section -->
         <a class="issue-card article-card" href="/issues/1/the-new-feudalism/">
           <div class="issue-meta">
-            <div class="issue-title">The New Feudalism</div>
-            <p class="issue-tease">Contracts, algorithms, and private arbitration are acting as law—shifting power away from public courts.</p>
-            <span class="btn-ghost">Read more →</span>
-          </div>
-        </a>
-
-        <!-- Existing placeholder -->
-        <a class="issue-card article-card" href="#">
-          <div class="issue-meta">
-            <div class="issue-title">Emergency Item Rules</div>
-            <p class="issue-tease">The gates that let “urgent” items in—and how they stretch.</p>
+            <div class="issue-title">The New Feudalism: Contracts, Algorithms, and the Erosion of Public Law</div>
+            <p class="issue-tease">Terms of service, scoring systems, and private arbitration—how private rules are replacing public law.</p>
             <span class="btn-ghost">Read more →</span>
           </div>
         </a>
@@ -70,7 +61,6 @@
     <div class="foot-left">
       <a href="/feed.xml">RSS</a> · <a href="/corrections/">Corrections</a> ·
       <a href="mailto:editor@corridorledger.com">Editor</a> · <a href="/tips/">Tips</a>
-      <a href="mailto:editor@corridorledger.com">Editor</a>
     </div>
     <div class="foot-right">© 2025 Corridor Ledger</div>
   </footer>
@@ -92,28 +82,4 @@
     }
     menuToggle.addEventListener('click',()=>openDropdown(!dropdown.classList.contains('open')));
     backdrop.addEventListener('click',()=>openDropdown(false));
-    document.addEventListener('keydown',e=>{ if(e.key==='Escape') openDropdown(false); });
-    dropdown.addEventListener('click',e=>{ if(e.target.tagName==='A') openDropdown(false); });
-
-    function markActive(){
-      const path=(location.pathname.replace(/\/+$/,'/')||'/');
-      document.querySelectorAll('.dropdown-nav [data-route]').forEach(a=>{
-        const r=a.getAttribute('data-route');
-        a.classList.toggle('active', (r==='/'&&path==='/') || (r!=='/'&&path.startsWith(r)));
-      });
-    }
-
-    (function initTheme(){
-      const saved=localStorage.getItem('cl-theme');
-      if(saved==='dark'||saved==='light'){ root.setAttribute('data-theme',saved); }
-      else if(window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches){
-        root.setAttribute('data-theme','dark');
-      }
-    })();
-    themeToggle.addEventListener('click',()=>{
-      const next=root.getAttribute('data-theme')==='dark'?'light':'dark';
-      root.setAttribute('data-theme',next); localStorage.setItem('cl-theme',next);
-    });
-  </script>
-</body>
-</html>
+    document.addEventListener('keydown',e=>{ if(e.key==='Escape') openDropdown(false);
