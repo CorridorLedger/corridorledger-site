@@ -24,15 +24,10 @@
 </head>
 <body>
   <header class="site-header">
-    <!-- top bar: fixed top-left menu, centered wordmark, top-right theme toggle -->
     <div class="brand">
-      <!-- top-left menu button -->
       <button class="icon-btn menu-btn" id="menuToggle"
-              aria-label="Open menu" aria-expanded="false" aria-controls="dropdown">
-        ☰
-      </button>
+              aria-label="Open menu" aria-expanded="false" aria-controls="dropdown">☰</button>
 
-      <!-- centered wordmark: light & dark versions (swap via CSS) -->
       <a href="/" class="logo-link" aria-label="Corridor Ledger home">
         <img
           src="wordmark_header_1200w.png"
@@ -55,15 +50,12 @@
         />
       </a>
 
-      <!-- top-right theme toggle (images only; no outline) -->
       <button class="icon-btn theme-btn" id="themeToggle" aria-label="Toggle dark mode">
-        <!-- show sun in light mode, moon in dark mode -->
         <img src="sun_grunge_black_transparent.png" alt="" class="theme-icon theme-icon-sun" />
         <img src="moon_grunge_white_transparent.png" alt="" class="theme-icon theme-icon-moon" />
       </button>
     </div>
 
-    <!-- centered desktop nav (no active highlight here) -->
     <nav class="nav desktop-nav" aria-label="Primary">
       <a href="/">Home</a>
       <a href="/mechanisms/">Mechanisms</a>
@@ -72,7 +64,6 @@
       <a href="/dossiers/">Dossiers</a>
     </nav>
 
-    <!-- Dropdown under the menu button (opens beneath) -->
     <div class="dropdown" id="dropdown" aria-hidden="true">
       <form class="dropdown-search" role="search" aria-label="Site search"
             action="/search/" method="GET">
@@ -91,10 +82,14 @@
   </header>
 
   <main id="main" class="container">
+    <!-- Live issue hero -->
     <section class="rail">
       <article class="hero hero-center">
-        <h1 class="headline">The Ledger Opens.</h1>
-        <p class="dek">We’re building the first batch of stories now. Launches September 5, 2025.</p>
+        <img src="issue1_cover.png" alt="Issue No. 1 cover: Spotlight Keepers"
+             style="max-width:260px;border-radius:10px;border:1px solid var(--border)" />
+        <h1 class="headline" style="margin-top:12px">Issue No. 1 — Spotlight Keepers</h1>
+        <p class="dek">When cameras cut, decisions don’t. Consent agendas, emergency items, and the people who keep things moving.</p>
+        <p><a class="btn-ghost" href="/issues/1/" aria-label="Read Issue No. 1">Read the issue →</a></p>
       </article>
     </section>
 
@@ -131,9 +126,7 @@
       <a href="feed.xml">RSS</a> · <a href="/corrections/">Corrections</a> ·
       <a href="mailto:editor@corridorledger.com">Editor</a>
     </div>
-    <div class="foot-right">
-      © 2025 Corridor Ledger
-    </div>
+    <div class="foot-right">© 2025 Corridor Ledger</div>
   </footer>
 
   <script>
@@ -144,7 +137,6 @@
     const themeToggle = document.getElementById('themeToggle');
     const root        = document.documentElement;
 
-    // Dropdown open/close
     function openDropdown(open) {
       dropdown.classList.toggle('open', open);
       backdrop.classList.toggle('show', open);
@@ -161,7 +153,6 @@
     document.addEventListener('keydown', (e) => { if (e.key === 'Escape') openDropdown(false); });
     dropdown.addEventListener('click', (e) => { if (e.target.tagName === 'A') openDropdown(false); });
 
-    // Active link ONLY in dropdown
     function markActiveInDropdown() {
       const path = (location.pathname.replace(/\/+$/,'/') || '/');
       document.querySelectorAll('.dropdown-nav [data-route]').forEach(a => {
@@ -171,7 +162,6 @@
       });
     }
 
-    // Theme init + toggle (persist in localStorage)
     (function initTheme(){
       const saved = localStorage.getItem('cl-theme');
       if (saved === 'dark' || saved === 'light') {
