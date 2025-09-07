@@ -3,74 +3,28 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Corridor Ledger</title>
-  <meta name="description" content="Corridor Ledger investigates the unseen machinery of power—contracts, committees, and quiet capital—so readers can see how decisions are actually made.">
-
-  <!-- Favicons -->
-  <link rel="icon" href="favicon.ico" type="image/x-icon" />
-  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png" />
-  <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png" media="(prefers-color-scheme: light)">
-  <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon-dark.png" media="(prefers-color-scheme: dark)">
-  <meta name="theme-color" content="#ffffff" />
-
-  <!-- Styles -->
-  <link rel="stylesheet" href="main.css" />
-
-  <!-- Social sharing -->
-  <meta property="og:title" content="Corridor Ledger">
-  <meta property="og:description" content="Power, documented.">
-  <meta property="og:image" content="wordmark_header_1200w.png">
-  <meta name="twitter:card" content="summary_large_image">
+  <title>Mechanisms · Corridor Ledger</title>
+  <link rel="stylesheet" href="/main.css" />
+  <link rel="icon" href="/favicon.ico" />
 </head>
 <body>
   <header class="site-header">
     <div class="brand">
-      <button class="icon-btn menu-btn" id="menuToggle"
-              aria-label="Open menu" aria-expanded="false" aria-controls="dropdown">☰</button>
-
+      <button class="icon-btn menu-btn" id="menuToggle" aria-label="Open menu" aria-expanded="false" aria-controls="dropdown">☰</button>
       <a href="/" class="logo-link" aria-label="Corridor Ledger home">
-        <img
-          src="wordmark_header_1200w.png"
-          srcset="wordmark_header_512w.png 512w,
-                  wordmark_header_800w.png 800w,
-                  wordmark_header_1200w.png 1200w,
-                  wordmark_header.png 2000w"
-          sizes="(max-width: 900px) 70vw, 560px"
-          alt="Corridor Ledger"
-          class="wordmark wordmark-light"
-          decoding="async"
-          loading="eager"
-        />
-        <img
-          src="wordmark_header_dark_1200w.png"
-          alt="Corridor Ledger"
-          class="wordmark wordmark-dark"
-          decoding="async"
-          loading="eager"
-        />
+        <img src="/wordmark_header_1200w.png" class="wordmark wordmark-light" alt="Corridor Ledger" />
+        <img src="/wordmark_header_dark_1200w.png" class="wordmark wordmark-dark" alt="Corridor Ledger" />
       </a>
-
       <button class="icon-btn theme-btn" id="themeToggle" aria-label="Toggle dark mode">
-        <img src="sun_grunge_black_transparent.png" alt="" class="theme-icon theme-icon-sun" />
-        <img src="moon_grunge_white_transparent.png" alt="" class="theme-icon theme-icon-moon" />
+        <img src="/sun_grunge_black_transparent.png" class="theme-icon theme-icon-sun" alt="" />
+        <img src="/moon_grunge_white_transparent.png" class="theme-icon theme-icon-moon" alt="" />
       </button>
     </div>
-
-    <nav class="nav desktop-nav" aria-label="Primary">
-      <a href="/">Home</a>
-      <a href="/mechanisms/">Mechanisms</a>
-      <a href="/figures/">Figures</a>
-      <a href="/numbers/">Numbers</a>
-      <a href="/dossiers/">Dossiers</a>
-    </nav>
-
     <div class="dropdown" id="dropdown" aria-hidden="true">
-      <form class="dropdown-search" role="search" aria-label="Site search"
-            action="/search/" method="GET">
-        <input class="search-input" type="search" name="q"
-               placeholder="Search Corridor Ledger" />
+      <form class="dropdown-search" role="search" aria-label="Site search" action="/search/" method="GET">
+        <input class="search-input" type="search" name="q" placeholder="Search Corridor Ledger" />
       </form>
-      <nav class="dropdown-nav" aria-label="Mobile primary">
+      <nav class="dropdown-nav">
         <a href="/" data-route="/">Home</a>
         <a href="/mechanisms/" data-route="/mechanisms/">Mechanisms</a>
         <a href="/figures/" data-route="/figures/">Figures</a>
@@ -81,99 +35,74 @@
     <div class="dropdown-backdrop" id="backdrop" aria-hidden="true"></div>
   </header>
 
-  <main id="main" class="container">
-    <!-- Live issue hero -->
+  <main class="container" data-pagefind-body data-section="Mechanisms">
     <section class="rail">
       <article class="hero hero-center">
-        <img src="issue1_cover.png" alt="Issue No. 1 cover: Spotlight Keepers"
-             style="max-width:260px;border-radius:10px;border:1px solid var(--border)" />
-        <h1 class="headline" style="margin-top:12px">Issue No. 1 — Spotlight Keepers</h1>
-        <p class="dek">When cameras cut, decisions don’t. Consent agendas, emergency items, and the people who keep things moving.</p>
-        <p><a class="btn-ghost" href="/issues/1/" aria-label="Read Issue No. 1">Read the issue →</a></p>
+        <h1 class="headline">Mechanisms</h1>
+        <p class="dek">Rules, contracts, and procedures—where leverage hides.</p>
       </article>
     </section>
 
-    <!-- Issues grid -->
     <section class="rail">
-      <h2 class="center">Issues</h2>
       <div class="issues-grid">
-        <!-- Issue 1 -->
-        <a class="issue-card" href="/issues/1/">
-          <img src="issue1_cover.png" alt="Issue No. 1 cover: Spotlight Keepers" />
+        <a class="issue-card article-card" href="#">
           <div class="issue-meta">
-            <div class="issue-title">Issue No. 1 — Spotlight Keepers</div>
-            <p class="issue-tease">When cameras cut, decisions don’t. Consent agendas, emergency items, and the people who keep things moving.</p>
+            <div class="issue-title">Emergency Item Rules</div>
+            <p class="issue-tease">The gates that let “urgent” items in—and how they stretch.</p>
             <span class="btn-ghost">Read more →</span>
           </div>
         </a>
-      </div>
-    </section>
-
-    <section class="rail cta">
-      <div class="cta-box">
-        <h2 class="cta-heading">Power, documented.</h2>
-        <p class="muted same-as-heading">One issue per month. Evidence first.</p>
-        <form onsubmit="return false" aria-label="Newsletter signup">
-          <input type="email" placeholder="you@email.com" aria-label="Email" inputmode="email" />
-          <button type="submit">Notify me</button>
-        </form>
       </div>
     </section>
   </main>
 
   <footer class="site-footer">
     <div class="foot-left">
-      <a href="feed.xml">RSS</a> · <a href="/corrections/">Corrections</a> ·
+      <a href="/feed.xml">RSS</a> · <a href="/corrections/">Corrections</a> ·
+      <a href="mailto:editor@corridorledger.com">Editor</a> · <a href="/tips/">Tips</a>
       <a href="mailto:editor@corridorledger.com">Editor</a>
     </div>
     <div class="foot-right">© 2025 Corridor Ledger</div>
   </footer>
 
   <script>
-    // Elements
-    const menuToggle  = document.getElementById('menuToggle');
-    const dropdown    = document.getElementById('dropdown');
-    const backdrop    = document.getElementById('backdrop');
-    const themeToggle = document.getElementById('themeToggle');
-    const root        = document.documentElement;
+    const menuToggle=document.getElementById('menuToggle');
+    const dropdown=document.getElementById('dropdown');
+    const backdrop=document.getElementById('backdrop');
+    const themeToggle=document.getElementById('themeToggle');
+    const root=document.documentElement;
 
-    function openDropdown(open) {
-      dropdown.classList.toggle('open', open);
-      backdrop.classList.toggle('show', open);
-      menuToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
-      dropdown.setAttribute('aria-hidden', open ? 'false' : 'true');
-      document.body.classList.toggle('no-scroll', open);
-      if (open) {
-        markActiveInDropdown();
-        dropdown.querySelector('.search-input')?.focus();
-      }
+    function openDropdown(open){
+      dropdown.classList.toggle('open',open);
+      backdrop.classList.toggle('show',open);
+      menuToggle.setAttribute('aria-expanded',open?'true':'false');
+      dropdown.setAttribute('aria-hidden',open?'false':'true');
+      document.body.classList.toggle('no-scroll',open);
+      if(open){ markActive(); dropdown.querySelector('.search-input')?.focus(); }
     }
-    menuToggle.addEventListener('click', () => openDropdown(!dropdown.classList.contains('open')));
-    backdrop.addEventListener('click', () => openDropdown(false));
-    document.addEventListener('keydown', (e) => { if (e.key === 'Escape') openDropdown(false); });
-    dropdown.addEventListener('click', (e) => { if (e.target.tagName === 'A') openDropdown(false); });
+    menuToggle.addEventListener('click',()=>openDropdown(!dropdown.classList.contains('open')));
+    backdrop.addEventListener('click',()=>openDropdown(false));
+    document.addEventListener('keydown',e=>{ if(e.key==='Escape') openDropdown(false); });
+    dropdown.addEventListener('click',e=>{ if(e.target.tagName==='A') openDropdown(false); });
 
-    function markActiveInDropdown() {
-      const path = (location.pathname.replace(/\/+$/,'/') || '/');
-      document.querySelectorAll('.dropdown-nav [data-route]').forEach(a => {
-        const route = a.getAttribute('data-route');
-        const active = (route === '/' && path === '/') || (route !== '/' && path.startsWith(route));
-        a.classList.toggle('active', active);
+    function markActive(){
+      const path=(location.pathname.replace(/\/+$/,'/')||'/');
+      document.querySelectorAll('.dropdown-nav [data-route]').forEach(a=>{
+        const r=a.getAttribute('data-route');
+        a.classList.toggle('active', (r==='/'&&path==='/') || (r!=='/'&&path.startsWith(r)));
       });
     }
 
     (function initTheme(){
-      const saved = localStorage.getItem('cl-theme');
-      if (saved === 'dark' || saved === 'light') {
-        root.setAttribute('data-theme', saved);
-      } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-        root.setAttribute('data-theme', 'dark');
+      const saved=localStorage.getItem('cl-theme');
+      if(saved==='dark'||saved==='light'){ root.setAttribute('data-theme',saved); }
+      else if(window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches){
+        root.setAttribute('data-theme','dark');
       }
     })();
-    themeToggle.addEventListener('click', () => {
-      const next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
-      root.setAttribute('data-theme', next);
-      localStorage.setItem('cl-theme', next);
+    themeToggle.addEventListener('click',()=>{
+      const next=root.getAttribute('data-theme')==='dark'?'light':'dark';
+      root.setAttribute('data-theme',next); localStorage.setItem('cl-theme',next);
     });
   </script>
 </body>
